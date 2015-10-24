@@ -1,0 +1,139 @@
+#!/bin/bash
+# vim: set filetype=sh:
+
+PREFIX="${DESK_DIR:-$HOME/.desk}"
+DESKS="${DESK_DESKS_DIR:-$PREFIX/desks}"
+
+
+cmd_version() {
+    echo "◲  desk 0.1.1"
+}
+
+
+cmd_usage() {
+    cmd_version
+    echo
+    cat <<_EOF
+Usage:
+
+    $PROGRAM
+        List the current desk and any associated aliases. If no desk 
+        is being used, display available desks.
+    $PROGRAM init
+        Initialize desk configuration.
+    $PROGRAM (list|ls)
+        List all desks along with a description.
+    $PROGRAM (.|go) desk-name
+        Activate a desk.
+    $PROGRAM help
+        Show this text.
+    $PROGRAM version
+        Show version information.
+
+Since desk spawns a shell, to deactivate and "pop" out a desk, you
+simply need to exit or otherwise end the current shell process.
+_EOF
+}
+
+cmd_init() {
+    if [ -d "$PREFIX" ]; then
+        echo "Desk dir already exists at ${PREFIX}"
+        exit 1
+    fi
+    read -p "Where do you want to store your deskfiles? (default: ${PREFIX}): " \
+        NEW_PREFIX
+    [ -z "${NEW_PREFIX}" ] && NEW_PREFIX="$PREFIX"
+
+    if [ ! -d "${NEW_PREFIX}" ]; then
+        echo "${NEW_PREFIX} doesn't exist, attempting to create."
+        mkdir -p "$NEW_PREFIX/desks"
+    fi
+    echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
+}
+
+
+cmd_go() {
+    local TODESK="$1"
+    local DESKPATH="$(find "$DESKS" -name "${TODESK}".sh)"
+    if [ -z "$DESKPATH" ]; then 
+        echo "Desk" "$TODESK" "not found in" "$DESKS"
+        exit 1
+    else
+        DESK_ENV="${DESKPATH}" $SHELL
+    fi
+}
+
+
+cmd_list() {
+    if [ ! -d "$DESKS" ]; then
+        echo "No desk dir! Run 'desk init'." 
+        exit 1
+    fi
+
+    find "$DESKS" -name '*.sh' -print0 | while read -d '' -r f; do
+        local name=$(basename "${f/.sh//}") 
+        local desc=$(echo_description "$f")
+
+        if [ -z "$desc" ]; then
+            echo "$name"
+        else
+            echo "$name" "-" "$desc"
+        fi
+    done
+}
+
+
+cmd_current() {
+    local DESKPATH=$DESK_ENV
+    if [ -z "$DESKPATH" ]; then
+        echo "No desk activated." 
+        exit 2
+    else
+        basename "${DESKPATH/.sh//}"
+        echo_description "$DESKPATH"
+        local CALLABLES=$(get_callables "$DESKPATH")
+
+        [ -z "$CALLABLES" ] || echo ""
+
+        for NAME in $CALLABLES; do
+            local DOCLINE=$(
+                grep -B 1 -E \
+                    "^(alias ${NAME}=|(function )?${NAME}\()" "$DESKPATH" \
+                    | grep "#")
+
+            if [ -z "$DOCLINE" ]; then
+                echo "  ${NAME}"
+            else
+                echo "  ${NAME} -" "${DOCLINE##\# }"
+            fi
+        done
+    fi
+}
+
+# Echo the description of a desk. $1 is the deskfile.
+echo_description() {
+    local descline=$(grep -E "#\s+Description" "$1")
+    echo "${descline##*Description: }"
+}
+
+# Return a list of aliases and functions for a given desk
+get_callables() {
+    local DESKPATH=$1
+    grep -E "^(alias |(function )?[a-zA-Z0-9_]+\()" "$DESKPATH" \
+        | sed 's/alias \([^= ]*\)=.*/\1/' \
+        | sed 's/\(function \)\?\([a-zA-Z0-9]*\)().*/\2/'
+}
+
+
+PROGRAM="${0##*/}"
+
+case "$1" in
+    init) shift;               cmd_init "$@" ;;
+    help|--help) shift;        cmd_usage "$@" ;;
+    version|--version) shift;  cmd_version "$@" ;;
+    ls|list) shift;            cmd_list "$@" ;;
+    go|.) shift;               cmd_go "$@" ;;
+    clear) shift;              cmd_clear "$@" ;;
+    *)                         cmd_current "$@" ;;
+esac
+exit 0
