@@ -9,7 +9,7 @@ bash: dockerbuild
 	
 .PHONY: lint
 lint:
-	shellcheck desk
+	shellcheck -e SC2155 desk
 
 .PHONY: test
 test:
