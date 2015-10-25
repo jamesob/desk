@@ -48,6 +48,19 @@ cmd_init() {
         echo "${NEW_PREFIX} doesn't exist, attempting to create."
         mkdir -p "$NEW_PREFIX/desks"
     fi
+    local SHELLEX="${SHELL##*/}"
+    case "$SHELLEX" in
+        bash)   local SHELLRC=~/.bashrc ;;
+        zsh)    local SHELLRC=~/.zshrc ;;
+    esac
+    read -p "Where's your shell rc file? (default: ${SHELLRC}): " \
+        USER_SHELLRC
+    [ -z "${USER_SHELLRC}" ] && USER_SHELLRC="$SHELLRC"
+    if [ ! -f "$USER_SHELLRC" ]; then
+        echo "${USER_SHELLRC} doesn't exist"
+        exit 1
+    fi
+    echo "[ ! -z \"\$DESK_ENV\" ] && source \"\$DESK_ENV\"" >> "$USER_SHELLRC"
     echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
 }
 
