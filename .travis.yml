@@ -6,6 +6,6 @@ before_install:
     - tar xvf data.tar.xz
     - cp ./usr/bin/shellcheck .
 env:
-    - PATH=.
+    - PATH=$PATH:$(pwd)
 
 script: make lint test
