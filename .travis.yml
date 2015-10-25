@@ -1,6 +1,7 @@
 sudo: required
+language: bash
 before_install:
-    - sudo apt-get update -qq
-    - sudo apt-get install -y shellcheck
+    - wget http://ftp.debian.org/debian/pool/main/s/shellcheck/shellcheck_0.3.7-1_amd64.deb
+    - sudo dpkg -i shellcheck_0.3.7-1_amd64.deb
 
 script: make lint test
