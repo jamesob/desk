@@ -12,10 +12,35 @@ shell aliases and functions.
 
 There are no dependencies other than some kind of Unix shell.
 
-<img src='screencap.gif' width=890>
+```sh
+◲  desk 0.1.1
+
+Usage:
+
+    desk
+        List the current desk and any associated aliases. If no desk 
+        is being used, display available desks.
+    desk init
+        Initialize desk configuration.
+    desk (list|ls)
+        List all desks along with a description.
+    desk (.|go) desk-name
+        Activate a desk.
+    desk help
+        Show this text.
+    desk version
+        Show version information.
+
+Since desk spawns a shell, to deactivate and "pop" out a desk, you
+simply need to exit or otherwise end the current shell process.
+```
+
+<img src='screencap.gif' width=700>
 
 For example, given this deskfile
 ```sh
+# tf.sh
+# 
 # Description: desk for doing work on a terraform-based repository
 #
 
