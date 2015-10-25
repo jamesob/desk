@@ -1,6 +1,8 @@
 
 # ◲  desk
 
+[![build](https://api.travis-ci.org/jamesob/desk.svg)](https://travis-ci.org/jamesob/desk)
+
 Lightweight workspace manager for the shell. 
 
 Desk makes it easy to flip back and forth between different project contexts in
