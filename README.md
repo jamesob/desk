@@ -10,7 +10,14 @@ your favorite shell.
 
 Instead of relying on `CTRL-R` to execute and recall ("that command's gotta
 be here somewhere..."), desk helps shorten and document those actions with
-shell aliases and functions.
+shell aliases and functions, which are then namespaced under a particular
+desk.
+
+I have a hard time calling this a "workspace manager" with a straight
+face -- it's basically just a shell script that sources another shell script in a new shell.
+But I often find myself working in multiple different code trees simulataneously:
+the quick context switches and namespaced commands that desk facilitates 
+have proven useful.
 
 There are no dependencies other than some kind of Unix shell.
 
