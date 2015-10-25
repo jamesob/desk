@@ -6,18 +6,13 @@ Lightweight workspace manager for the shell.
 Desk makes it easy to flip back and forth between different project contexts in
 your favorite shell. 
 
-Instead of relying on `CTRL-R` for to execute and recall ("that command's gotta
+Instead of relying on `CTRL-R` to execute and recall ("that command's gotta
 be here somewhere..."), desk helps shorten and document those actions with
 shell aliases and functions.
 
 There are no dependencies other than some kind of Unix shell.
 
-![whoa screencasting](screencap.gif)
-
-Basically, desk just associates a shell script (`name.sh`) with a name. When
-you call `desk . name`, desk drops you into a shell where `name.sh` has been
-executed, and then desk extracts out certain comments in `name.sh` for useful
-rendering.
+<img src='screencap.gif' width=890>
 
 For example, given this deskfile
 ```sh
@@ -56,7 +51,12 @@ desk for doing work on a terraform repo
   plan - Run `terraform plan` with proper AWS var config
   apply - Run `terraform apply` with proper AWS var config
 ```
-
+ 
+Basically, desk just associates a shell script (`name.sh`) with a name. When
+you call `desk . name`, desk drops you into a shell where `name.sh` has been
+executed, and then desk extracts out certain comments in `name.sh` for useful
+rendering.
+          
 ### Installing
 
 0. `git clone <this repo>`
