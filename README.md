@@ -15,7 +15,7 @@ desk.
 
 I have a hard time calling this a "workspace manager" with a straight
 face -- it's basically just a shell script that sources another shell script in a new shell.
-But I often find myself working in multiple different code trees simulataneously:
+But I often find myself working in multiple different code trees simultaneously:
 the quick context switches and namespaced commands that desk facilitates 
 have proven useful.
 
