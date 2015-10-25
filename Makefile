@@ -10,3 +10,7 @@ bash: dockerbuild
 .PHONY: lint
 lint:
 	shellcheck desk
+
+.PHONY: test
+test:
+	desk --help
