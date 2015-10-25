@@ -60,7 +60,7 @@ cmd_init() {
         echo "${USER_SHELLRC} doesn't exist"
         exit 1
     fi
-    echo '[ ! -z "$DESK_ENV" ] && source $DESK_ENV' >> "$USER_SHELLRC"
+    echo "[ ! -z \"\$DESK_ENV\" ] && source \"\$DESK_ENV\"" >> "$USER_SHELLRC"
     echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
 }
 
