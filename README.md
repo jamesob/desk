@@ -98,11 +98,12 @@ rendering.
 0. `git clone git@github.com:jamesob/desk.git && cd desk`
 0. `sudo make install` or `cp desk ~/bin/desk`
 0. `desk init`
+0. Start adding deskfiles to your config directory, e.g. `~/.desk/desks/hacking_gibson.sh`
 
 ### Deskfile rules
 
-Deskfiles are just shell scripts, nothing more. Desk does pay attention 
-to certain kinds of comments, though.
+Deskfiles are just shell scripts, nothing more, that live in the desk config directory. 
+Desk does pay attention to certain kinds of comments, though.
 
 - *description*: you can describe a deskfile by including `# Description: ...`
   somewhere in the file.
@@ -115,3 +116,9 @@ to certain kinds of comments, though.
 Of course, the desk config directory (by default `~/.desks`) can be a symlink
 so that deskfiles can be stored in some centralized place, like Dropbox,
 and so shared across many computers.
+
+### Using a non-default config location
+
+By default, desks live in `~/.desk/desks`. If you want to use some other location,
+specify as much in `desk init` and then ensure you set `$DESK_DIR` to match
+that location in your shell's rc file.
