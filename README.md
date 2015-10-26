@@ -1,7 +1,7 @@
 
 # ◲  desk
 
-[![build](https://api.travis-ci.org/jamesob/desk.svg)](https://travis-ci.org/jamesob/desk)
+[![build](https://api.travis-ci.org/jamesob/desk.svg)](https://travis-ci.org/jamesob/desk) [![Join the chat at https://gitter.im/jamesob/desk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesob/desk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Lightweight workspace manager for the shell. 
 
