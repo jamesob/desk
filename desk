@@ -136,7 +136,7 @@ get_callables() {
     local DESKPATH=$1
     grep -E "^(alias |(function )?[a-zA-Z0-9_]+\()" "$DESKPATH" \
         | sed 's/alias \([^= ]*\)=.*/\1/' \
-        | sed 's/\(function \)\?\([a-zA-Z0-9]*\)().*/\2/'
+        | sed -E 's/(function )?([a-zA-Z0-9]*)\(\).*/\2/'
 }
 
 
