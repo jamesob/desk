@@ -51,7 +51,7 @@ cmd_init() {
     local SHELLEX="${SHELL##*/}"
     case "$SHELLEX" in
         bash)   local SHELLRC=~/.bashrc ;;
-        fish)   local SHELLRC=~/.fishrc ;;
+        fish)   local SHELLRC=~/.config/fish/config.fish ;;
         zsh)    local SHELLRC=~/.zshrc ;;
     esac
     read -p "Where's your shell rc file? (default: ${SHELLRC}): " \
