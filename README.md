@@ -93,8 +93,8 @@ rendering.
           
 ### Installing
 
-0. `git clone <this repo>`
-0. `sudo make install` or `cp desk/desk ~/bin/desk`
+0. `git clone git@github.com:jamesob/desk.git && cd desk`
+0. `sudo make install` or `cp desk ~/bin/desk`
 0. `desk init`
 
 ### Deskfile rules
