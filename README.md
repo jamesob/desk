@@ -48,7 +48,7 @@ simply need to exit or otherwise end the current shell process.
 
 <img src='screencap.gif' width=700>
 
-For example, given this deskfile
+For example, given this deskfile (`~/.desk/desks/tf.sh`):
 ```sh
 # tf.sh
 # 
