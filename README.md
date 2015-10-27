@@ -122,3 +122,19 @@ and so shared across many computers.
 By default, desks live in `~/.desk/desks`. If you want to use some other location,
 specify as much in `desk init` and then ensure you set `$DESK_DIR` to match
 that location in your shell's rc file.
+
+### Usage with OS X
+
+Desk won't work when used strictly with `~/.bash_profile` on OS X's terminal, since
+the content of `~/.bash_profile` is only executed on *login*, not shell creation, as
+explained [here](http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html). 
+
+My recommendation is to use `~/.bashrc` as your general-purpose config file, then simply 
+have `~/.bash_profile` point to it:
+```sh
+# ~/.bash_profile
+
+if [ -f ~/.bashrc ]; then
+   source ~/.bashrc
+fi
+```
