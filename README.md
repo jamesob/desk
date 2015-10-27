@@ -24,7 +24,7 @@ have proven useful.
 There are no dependencies other than some kind of Unix shell.
 
 ```sh
-◲  desk 0.1.1
+◲  desk 0.1.2
 
 Usage:
 
