@@ -6,7 +6,7 @@ DESKS="${DESK_DESKS_DIR:-$PREFIX/desks}"
 
 
 cmd_version() {
-    echo "◲  desk 0.1.1"
+    echo "◲  desk 0.1.2"
 }
 
 
