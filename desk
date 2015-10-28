@@ -5,6 +5,8 @@ PREFIX="${DESK_DIR:-$HOME/.desk}"
 DESKS="${DESK_DESKS_DIR:-$PREFIX/desks}"
 
 
+## Commands
+
 cmd_version() {
     echo "◲  desk 0.1.2"
 }
@@ -125,6 +127,8 @@ cmd_current() {
     fi
 }
 
+## Utilities
+
 # Echo the description of a desk. $1 is the deskfile.
 echo_description() {
     local descline=$(grep -E "#\s+Description" "$1")
@@ -148,7 +152,6 @@ case "$1" in
     version|--version) shift;  cmd_version "$@" ;;
     ls|list) shift;            cmd_list "$@" ;;
     go|.) shift;               cmd_go "$@" ;;
-    clear) shift;              cmd_clear "$@" ;;
     *)                         cmd_current "$@" ;;
 esac
 exit 0
