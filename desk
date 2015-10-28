@@ -74,8 +74,7 @@ cmd_go() {
         echo "Desk" "$TODESK" "not found in" "$DESKS"
         exit 1
     else
-        export DESK_NAME="${TODESK}"
-        DESK_ENV="${DESKPATH}" $SHELL
+        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" $SHELL
     fi
 }
 
