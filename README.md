@@ -120,7 +120,7 @@ and so shared across many computers.
 ### Using a non-default config location
 
 By default, desks live in `~/.desk/desks`. If you want to use some other location,
-specify as much in `desk init` and then ensure you set `$DESK_DIR` to match
+specify as much in `desk init` and then ensure you set `$DESK_DESKS_DIR` to match
 that location in your shell's rc file.
 
 ### Usage with OS X
