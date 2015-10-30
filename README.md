@@ -139,3 +139,8 @@ if [ -f ~/.bashrc ]; then
    source ~/.bashrc
 fi
 ```
+
+### Tips accepted
+BTC: `18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h`
+
+Half of all tips will be donated to a cause promoting aid for Syrian refugees.
