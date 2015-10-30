@@ -115,7 +115,7 @@ cmd_current() {
         for NAME in $CALLABLES; do
             local DOCLINE=$(
                 grep -B 1 -E \
-                    "^(alias ${NAME}=|(function )?${NAME}\()" "$DESKPATH" \
+                    "^(alias ${NAME}=|(function )?${NAME}( )?\()" "$DESKPATH" \
                     | grep "#")
 
             if [ -z "$DOCLINE" ]; then
@@ -138,7 +138,7 @@ echo_description() {
 # Return a list of aliases and functions for a given desk
 get_callables() {
     local DESKPATH=$1
-    grep -E "^(alias |(function )?[a-zA-Z0-9_]+\()" "$DESKPATH" \
+    grep -E "^(alias |(function )?[a-zA-Z0-9_-]+( )?\()" "$DESKPATH" \
         | sed 's/alias \([^= ]*\)=.*/\1/' \
         | sed -E 's/(function )?([a-zA-Z0-9]*)\(\).*/\2/'
 }
