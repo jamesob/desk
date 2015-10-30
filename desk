@@ -64,19 +64,27 @@ cmd_init() {
         exit 1
     fi
     echo "# Hook for desk activation" >> "$USER_SHELLRC"
-    echo "[ ! -z \"\$DESK_ENV\" ] && source \"\$DESK_ENV\"" >> "$USER_SHELLRC"
+    if [ "$SHELLEX" == "fish" ]; then
+      echo "test -n \"\$DESK_ENV\"; and source \"\$DESK_ENV\"" >> "$USER_SHELLRC"
+    else
+      echo "[ -n \"\$DESK_ENV\" ] && source \"\$DESK_ENV\"" >> "$USER_SHELLRC"
+    fi
     echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
 }
 
 
 cmd_go() {
     local TODESK="$1"
-    local DESKPATH="$(find "$DESKS" -name "${TODESK}".sh)"
-    if [ -z "$DESKPATH" ]; then 
+    local SHELLEX="${SHELL##*/}"
+    local DESKPATH="$DESKS/$TODESK.$SHELLEX"
+    local DESKPATH2="$DESKS/$TODESK.sh"
+    if [ -r "$DESKPATH" ]; then 
+        DESK_NAME="$TODESK" DESK_ENV="$DESKPATH" $SHELL
+    elif [ -r "$DESKPATH2" ] && [ "$SHELLEX" != "fish" ]; then
+        DESK_NAME="$TODESK" DESK_ENV="$DESKPATH2" $SHELL
+    else
         echo "Desk" "$TODESK" "not found in" "$DESKS"
         exit 1
-    else
-        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" $SHELL
     fi
 }
 
@@ -102,11 +110,13 @@ cmd_list() {
 
 cmd_current() {
     local DESKPATH=$DESK_ENV
+    local DESK_NAME=${DESKPATH##*/}
+    local DESK_NAME=${DESK_NAME%.*}
     if [ -z "$DESKPATH" ]; then
         echo "No desk activated." 
         exit 2
     else
-        basename "${DESKPATH/.sh//}"
+        echo "$DESK_NAME"
         echo_description "$DESKPATH"
         local CALLABLES=$(get_callables "$DESKPATH")
 
@@ -115,7 +125,7 @@ cmd_current() {
         for NAME in $CALLABLES; do
             local DOCLINE=$(
                 grep -B 1 -E \
-                    "^(alias ${NAME}=|(function )?${NAME}\()" "$DESKPATH" \
+                    "^(alias ${NAME}=|(function )?${NAME}\()|function $NAME" "$DESKPATH" \
                     | grep "#")
 
             if [ -z "$DOCLINE" ]; then
@@ -138,9 +148,10 @@ echo_description() {
 # Return a list of aliases and functions for a given desk
 get_callables() {
     local DESKPATH=$1
-    grep -E "^(alias |(function )?[a-zA-Z0-9_]+\()" "$DESKPATH" \
+    grep -E "^(alias |(function )?[a-zA-Z0-9_]+\()|function $NAME" "$DESKPATH" \
         | sed 's/alias \([^= ]*\)=.*/\1/' \
-        | sed -E 's/(function )?([a-zA-Z0-9]*)\(\).*/\2/'
+        | sed -E 's/(function )?([a-zA-Z0-9]*)\(\).*/\2/' \
+        | sed -E 's/function ([a-zA-Z0-9]*).*/\1/'
 }
 
 
