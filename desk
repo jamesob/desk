@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # vim: set filetype=sh:
 
 PREFIX="${DESK_DIR:-$HOME/.desk}"
@@ -50,11 +50,10 @@ cmd_init() {
         echo "${NEW_PREFIX} doesn't exist, attempting to create."
         mkdir -p "$NEW_PREFIX/desks"
     fi
-    local SHELLEX="${SHELL##*/}"
-    case "$SHELLEX" in
-        bash)   local SHELLRC=~/.bashrc ;;
-        fish)   local SHELLRC=~/.config/fish/config.fish ;;
-        zsh)    local SHELLRC=~/.zshrc ;;
+    case "$(get_running_shell)" in
+        bash)   local SHELLRC="${HOME}/.bashrc" ;;
+        fish)   local SHELLRC="${HOME}/.config/fish/config.fish" ;;
+        zsh)    local SHELLRC="${HOME}/.zshrc" ;;
     esac
     read -p "Where's your shell rc file? (default: ${SHELLRC}): " \
         USER_SHELLRC
@@ -71,7 +70,7 @@ cmd_init() {
 
 cmd_go() {
     local TODESK="$1"
-    local DESKPATH="$(find "$DESKS" -name "${TODESK}".sh)"
+    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}".sh)"
     if [ -z "$DESKPATH" ]; then 
         echo "Desk" "$TODESK" "not found in" "$DESKS"
         exit 1
@@ -82,12 +81,12 @@ cmd_go() {
 
 
 cmd_list() {
-    if [ ! -d "$DESKS" ]; then
+    if [ ! -d "${DESKS}/" ]; then
         echo "No desk dir! Run 'desk init'." 
         exit 1
     fi
 
-    find "$DESKS" -name '*.sh' -print0 | while read -d '' -r f; do
+    find "${DESKS}/" -name '*.sh' -print0 | while read -d '' -r f; do
         local name=$(basename "${f/.sh//}") 
         local desc=$(echo_description "$f")
 
@@ -141,6 +140,20 @@ get_callables() {
     grep -E "^(alias |(function )?[a-zA-Z0-9_]+\()" "$DESKPATH" \
         | sed 's/alias \([^= ]*\)=.*/\1/' \
         | sed -E 's/(function )?([a-zA-Z0-9]*)\(\).*/\2/'
+}
+
+# Retrieve the name of the parent shell via procfs, if we have it available.
+get_running_shell() {
+    # Get cmdline procfile of the process running this script.
+    local CMDLINE_FILE="/proc/$(grep PPid /proc/$$/status | cut -f2)/cmdline"
+
+    if [ -f "$CMDLINE_FILE" ]; then
+        # Strip out any verion that may be attached to the shell executable.
+        local CMDLINE_SHELL=$(sed -r -e 's/\x0.*//' "$CMDLINE_FILE")
+        basename "$CMDLINE_SHELL"
+    else
+        echo "$SHELL"
+    fi
 }
 
 

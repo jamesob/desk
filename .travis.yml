@@ -1,11 +1,17 @@
-sudo: false
+sudo: required
+
 language: bash
+
+services:
+    - docker
+
 before_install:
     - wget http://ftp.debian.org/debian/pool/main/s/shellcheck/shellcheck_0.3.7-1_amd64.deb
     - ar x shellcheck_0.3.7-1_amd64.deb 
     - tar xvf data.tar.xz
     - cp ./usr/bin/shellcheck .
-env:
-    - PATH=$PATH:$(pwd)
 
-script: make lint test
+env:
+    - PATH=$PATH:$(pwd) SHELL_CMD='-c ./run_tests.sh'
+
+script: make lint test bash zsh
