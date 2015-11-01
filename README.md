@@ -141,6 +141,9 @@ fi
 ```
 
 ### Tips accepted
+
+![18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h](http://i.imgur.com/Faez4cr.png)
+
 BTC: `18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h`
 
-Half of all tips will be donated to a cause promoting aid for Syrian refugees.
+Half of all tips will be donated to [an organization providing aid to Syrian refugees](http://www.moas.eu/).
