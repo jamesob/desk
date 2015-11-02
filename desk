@@ -79,9 +79,9 @@ cmd_go() {
     local DESKPATH="$DESKS/$TODESK.$SHELLEX"
     local DESKPATH2="$DESKS/$TODESK.sh"
     if [ -r "$DESKPATH" ]; then 
-        DESK_NAME="$TODESK" DESK_ENV="$DESKPATH" $SHELL
+        DESK_ENV="$DESKPATH" $SHELL
     elif [ -r "$DESKPATH2" ] && [ "$SHELLEX" != "fish" ]; then
-        DESK_NAME="$TODESK" DESK_ENV="$DESKPATH2" $SHELL
+        DESK_ENV="$DESKPATH2" $SHELL
     else
         echo "Desk" "$TODESK" "not found in" "$DESKS"
         exit 1
