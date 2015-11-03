@@ -18,14 +18,14 @@ plan() {
 }
 
 # Run `terraform apply` with proper AWS var config
-apply() {
+apply () {
   terraform apply \
     -var "access_key=${AWS_ACCESS_KEY_ID}" \
     -var "secret_key=${AWS_SECRET_ACCESS_KEY}"
 }
 
 # Set up terraform config: <config_key>
-config() {
+config () {
   local KEY=$1
   terraform remote config -backend=s3 \
     -backend-config="bucket=some.bucket.secrets.terraform" \
