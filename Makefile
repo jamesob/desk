@@ -1,17 +1,17 @@
 
 .PHONY: default
 default:
-	@echo "Desk doesn't need to be compiled. Please run \"sudo make install\" to install desk." ||:
+	@echo "Desk doesn't need to be compiled. Please run \"sudo make install\" to install desk."
 
 .PHONY: install
 install:
 	@cp ./desk /usr/bin/desk ||:
-	@echo "Installing desk to /usr/bin/desk" ||:
+	@echo "Installing desk to /usr/bin/desk"
 
 .PHONY: uninstall
 uninstall:
 	@rm /usr/bin/desk ||:
-	@echo "Removing desk from /usr/bin" ||:
+	@echo "Removing desk from /usr/bin"
 
 .PHONY: dockerbuild
 dockerbuild:
