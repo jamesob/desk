@@ -164,8 +164,8 @@ get_callables() {
         | sed -E "s/function (${FNAME_CHARS}+).*/\1/"
 }
 
-# Echo the name of the parent shell via procfs, if we have it available.
 get_running_shell() {
+    # Echo the name of the parent shell via procfs, if we have it available.
     if [ -e /proc ]; then
         # Get cmdline procfile of the process running this script.
         local CMDLINE_FILE="/proc/$(grep PPid /proc/$$/status | cut -f2)/cmdline"
@@ -176,10 +176,11 @@ get_running_shell() {
             basename "$CMDLINE_SHELL"
             exit
         fi
-    else
-        basename "$SHELL"
-        exit
     fi
+    
+    # Fall back to $SHELL otherwise.
+    basename "$SHELL"
+    exit
 }
 
 # Echo the extension of recognized deskfiles (.fish for fish)
