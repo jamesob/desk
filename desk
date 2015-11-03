@@ -166,15 +166,19 @@ get_callables() {
 
 # Echo the name of the parent shell via procfs, if we have it available.
 get_running_shell() {
-    # Get cmdline procfile of the process running this script.
-    local CMDLINE_FILE="/proc/$(grep PPid /proc/$$/status | cut -f2)/cmdline"
+    if [ -e /proc ]; then
+        # Get cmdline procfile of the process running this script.
+        local CMDLINE_FILE="/proc/$(grep PPid /proc/$$/status | cut -f2)/cmdline"
 
-    if [ -f "$CMDLINE_FILE" ]; then
-        # Strip out any verion that may be attached to the shell executable.
-        local CMDLINE_SHELL=$(sed -r -e 's/\x0.*//' "$CMDLINE_FILE")
-        basename "$CMDLINE_SHELL"
+        if [ -f "$CMDLINE_FILE" ]; then
+            # Strip out any verion that may be attached to the shell executable.
+            local CMDLINE_SHELL=$(sed -r -e 's/\x0.*//' "$CMDLINE_FILE")
+            basename "$CMDLINE_SHELL"
+            exit
+        fi
     else
-        echo "$SHELL"
+        basename "$SHELL"
+        exit
     fi
 }
 
