@@ -133,7 +133,7 @@ cmd_current() {
             # Last clause in the grep regexp accounts for fish functions.
             local DOCLINE=$(
                 grep -B 1 -E \
-                    "^(alias ${NAME}=|(function )?${NAME}\()|function $NAME" "$DESKPATH" \
+                    "^(alias ${NAME}=|(function )?${NAME}( )?\()|function $NAME" "$DESKPATH" \
                     | grep "#")
 
             if [ -z "$DOCLINE" ]; then
@@ -158,9 +158,9 @@ echo_description() {
 # Echo a list of aliases and functions for a given desk
 get_callables() {
     local DESKPATH=$1
-    grep -E "^(alias |(function )?${FNAME_CHARS}+\()|function $NAME" "$DESKPATH" \
+    grep -E "^(alias |(function )?${FNAME_CHARS}+ ?\()|function $NAME" "$DESKPATH" \
         | sed 's/alias \([^= ]*\)=.*/\1/' \
-        | sed -E "s/(function )?(${FNAME_CHARS}+)\(\).*/\2/" \
+        | sed -E "s/(function )?(${FNAME_CHARS}+) ?\(\).*/\2/" \
         | sed -E "s/function (${FNAME_CHARS}+).*/\1/"
 }
 
