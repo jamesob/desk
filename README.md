@@ -21,7 +21,8 @@ But I often find myself working in multiple different code trees simultaneously:
 the quick context switches and namespaced commands that desk facilitates 
 have proven useful.
 
-There are no dependencies other than some kind of Unix shell.
+There are no dependencies other than `bash`. Desk is explicitly tested with `bash`,
+`zsh`, and `fish`.
 
 ```sh
 ◲  desk 0.1.2
