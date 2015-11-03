@@ -88,7 +88,8 @@ cmd_go() {
         echo "Desk $TODESK (${TODESK}${DESKEXT}) not found in $DESKS"
         exit 1
     else
-        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "$(get_running_shell)"
+        local SHELL_EXEC="$(get_running_shell)"
+        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}"
     fi
 }
 
