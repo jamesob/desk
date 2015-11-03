@@ -12,6 +12,9 @@ before_install:
     - cp ./usr/bin/shellcheck .
 
 env:
-    - PATH=$PATH:$(pwd) SHELL_CMD='-c ./run_tests.sh'
+    - PATH=$PATH:$(pwd)
 
-script: make lint test bash zsh
+script: 
+    - make lint
+    - SHELL_CMD='-c ./run_tests.sh' make bash zsh
+    - SHELL_CMD='-c ./run_tests.fish' make fish

@@ -20,7 +20,3 @@ fish: dockerbuild
 .PHONY: lint
 lint:
 	shellcheck -e SC2155 desk
-
-.PHONY: test
-test:
-	desk --help

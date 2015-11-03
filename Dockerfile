@@ -10,7 +10,9 @@ ADD desk /usr/local/bin/desk
 ADD test/zshrc .zshrc
 ADD test/bashrc .bashrc
 ADD test/run_tests.sh run_tests.sh
+ADD test/run_tests.fish run_tests.fish
 ADD examples examples
-RUN chown -R $USERNAME:$USERNAME .zshrc examples run_tests.sh .bashrc
+RUN mkdir -p .config/fish && touch .config/fish/config.fish
+RUN chown -R $USERNAME:$USERNAME .zshrc examples run_tests.fish run_tests.sh .bashrc .config
 
 USER $USERNAME

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Run automated tests to ensure desk is behaving as expected
 
 ensure() {
