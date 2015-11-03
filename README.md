@@ -1,7 +1,7 @@
 
 # ◲  desk
 
-[![build](https://api.travis-ci.org/jamesob/desk.svg)](https://travis-ci.org/jamesob/desk) [![Join the chat at https://gitter.im/jamesob/desk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesob/desk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![build](https://api.travis-ci.org/jamesob/desk.svg?branch=master)](https://travis-ci.org/jamesob/desk) [![Join the chat at https://gitter.im/jamesob/desk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesob/desk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Lightweight workspace manager for the shell. 
 
@@ -139,3 +139,11 @@ if [ -f ~/.bashrc ]; then
    source ~/.bashrc
 fi
 ```
+
+### Tips accepted
+
+![18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h](http://i.imgur.com/Faez4cr.png)
+
+BTC: `18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h`
+
+Half of all tips will be donated to [an organization providing aid to Syrian refugees](http://www.moas.eu/).
