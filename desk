@@ -172,7 +172,8 @@ get_running_shell() {
 
         if [ -f "$CMDLINE_FILE" ]; then
             # Strip out any verion that may be attached to the shell executable.
-            local CMDLINE_SHELL=$(sed -r -e 's/\x0.*//' "$CMDLINE_FILE")
+            # Strip leading dash for login shells.
+            local CMDLINE_SHELL=$(sed -r -e 's/\x0.*//' -e 's/^-//' "$CMDLINE_FILE")
             basename "$CMDLINE_SHELL"
             exit
         fi
