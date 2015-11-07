@@ -96,8 +96,9 @@ rendering.
           
 ### Installing
 
-0. `git clone git@github.com:jamesob/desk.git && cd desk`
-0. `sudo make install` or `cp desk ~/bin/desk`
+0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > /usr/local/bin/desk`
+0. `less /usr/local/bin/desk` to make sure you've downloaded what you think you've downloaded.
+0. `chmod +x /usr/local/bin/desk`
 0. `desk init`
 0. Start adding deskfiles to your config directory, e.g. `~/.desk/desks/hacking_gibson.sh`
 
