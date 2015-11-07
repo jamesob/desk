@@ -20,7 +20,7 @@ echo $HELP | grep 'desk init' >/dev/null
 ensure $? "Desk help doesn't contain init"
 echo $HELP | grep 'desk (list|ls)' >/dev/null
 ensure $? "Desk help doesn't contain list"
-echo $HELP | grep 'desk (.|go)' >/dev/null
+echo $HELP | grep 'desk \[.|go\]' >/dev/null
 ensure $? "Desk help doesn't contain go"
 echo $HELP | grep 'desk help' >/dev/null
 ensure $? "Desk help doesn't contain help"
