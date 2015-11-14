@@ -96,11 +96,15 @@ rendering.
           
 ### Installing
 
-0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > /usr/local/bin/desk`
-0. `less /usr/local/bin/desk` to make sure you've downloaded what you think you've downloaded.
-0. `chmod +x /usr/local/bin/desk`
+0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > ~/bin/desk`
+0. `less ~/bin/desk` to make sure you've downloaded what you think you've downloaded.
+0. `chmod +x ~/bin/desk`
 0. `desk init`
 0. Start adding deskfiles to your config directory, e.g. `~/.desk/desks/hacking_gibson.sh`
+
+Note that `~/bin` may not exist on your system, or may not be on your PATH. Feel free
+to substitute that for another directory, e.g. `/usr/local/bin`, and add `sudo` as 
+necessary.
 
 ### Deskfile rules
 
