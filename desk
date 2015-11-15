@@ -8,7 +8,7 @@ DESKS="${DESK_DESKS_DIR:-$PREFIX/desks}"
 ## Commands
 
 cmd_version() {
-    echo "◲  desk 0.2.1"
+    echo "◲  desk 0.3.1"
 }
 
 
@@ -27,6 +27,9 @@ Usage:
         List all desks along with a description.
     $PROGRAM (.|go) desk-name
         Activate a desk.
+    $PROGRAM edit [desk-name]
+        Edit (or create) a deskfile with the name specified, otherwise 
+        edit the active deskfile.
     $PROGRAM help
         Show this text.
     $PROGRAM version
@@ -121,6 +124,8 @@ cmd_current() {
     local DESK_NAME=${DESK_NAME%.*}
     if [ -z "$DESKPATH" ]; then
         echo "No desk activated." 
+        echo ""
+        cmd_list
         exit 2
     else
         echo "$DESK_NAME"
@@ -143,6 +148,26 @@ cmd_current() {
             fi
         done
     fi
+}
+
+cmd_edit() {
+    if [ $# -eq 0 ]; then
+        if [ "$DESK_NAME" == "" ]; then
+            echo "No desk activated."
+            exit 3
+        fi
+        local DESKNAME_TO_EDIT="$DESK_NAME"
+    elif [ $# -eq 1 ]; then
+        local DESKNAME_TO_EDIT="$1"
+    else
+        echo "Usage: ${PROGRAM} edit [desk-name]"
+        exit 1
+    fi
+
+    local DESKEXT=$(get_deskfile_extension)
+    local EDIT_PATH="${DESKS}/${DESKNAME_TO_EDIT}${DESKEXT}"
+
+    ${EDITOR:-vi} "$EDIT_PATH" 
 }
 
 ## Utilities
@@ -202,6 +227,7 @@ case "$1" in
     version|--version) shift;  cmd_version "$@" ;;
     ls|list) shift;            cmd_list "$@" ;;
     go|.) shift;               cmd_go "$@" ;;
+    edit) shift;               cmd_edit "$@" ;;
     *)                         cmd_current "$@" ;;
 esac
 exit 0

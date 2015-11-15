@@ -25,7 +25,7 @@ There are no dependencies other than `bash`. Desk is explicitly tested with `bas
 `zsh`, and `fish`.
 
 ```sh
-◲  desk 0.1.2
+◲  desk 0.3.1
 
 Usage:
 
@@ -38,6 +38,9 @@ Usage:
         List all desks along with a description.
     desk (.|go) desk-name
         Activate a desk.
+    desk edit [desk-name]
+        Edit (or create) a deskfile with the name specified, otherwise 
+        edit the active deskfile.
     desk help
         Show this text.
     desk version
