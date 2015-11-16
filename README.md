@@ -99,6 +99,7 @@ rendering.
 
 ### Installing
 
+#### Manually
 0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > ~/bin/desk`
 0. `less ~/bin/desk` to make sure you've downloaded what you think you've downloaded.
 0. `chmod +x ~/bin/desk`
@@ -108,6 +109,23 @@ rendering.
 Note that `~/bin` may not exist on your system, or may not be on your PATH. Feel free
 to substitute that for another directory, e.g. `/usr/local/bin`, and add `sudo` as
 necessary.
+
+#### Using [Antigen](https://github.com/zsh-users/antigen)
+
+0. Add `antigen bundle jamesob/desk` to your `.zshrc`
+0. Open a new terminal window. Antigen will clone the desk repo and add it to your path.
+
+#### Using [oh-my-zsh](http://ohmyz.sh/)
+
+0. `cd ~/.oh-my-zsh/custom/plugins`
+0. `git clone git@github.com:jamesob/desk.git`
+0. Add desk to your plugin list
+
+#### Using [zgen](https://github.com/tarjoilija/zgen)
+
+0. Add `zgen load jamesob/desk` to your `.zshrc` with your other load commands
+0. `rm ~/.zgen/init.zsh`
+0. Start a new shell; zgen will generate a new `init.zsh` and automatically clone the desk repository for you and add it to your path.
 
 ### Deskfile rules
 
