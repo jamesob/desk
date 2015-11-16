@@ -1,0 +1,21 @@
+#compdef desk
+_desk() {
+  local -a commands
+  commands=(
+    'help:Print a help message.'
+    'init:Initialize your desk configuration.'
+    'list:List available desks'
+    'ls:List available desks'
+    'edit:Edit or create a desk, defaults to current desk'
+    'go:activate a desk'
+    'version:Dhow the desk version.'
+  )
+
+  if (( CURRENT == 2 )); then
+    _describe -t commands 'commands' commands
+  fi
+
+  return 0
+}
+
+_desk
