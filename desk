@@ -23,6 +23,9 @@ Usage:
         is being used, display available desks.
     $PROGRAM init
         Initialize desk configuration.
+    $PROGRAM import [-n import-as-name] [path-to-deskfile]
+        Import the deskfile by path. If no path is specified, import a deskfile
+        from the current directory.
     $PROGRAM (list|ls)
         List all desks along with a description.
     $PROGRAM (.|go) desk-name
@@ -120,8 +123,6 @@ cmd_list() {
 
 cmd_current() {
     local DESKPATH=$DESK_ENV
-    local DESK_NAME=${DESKPATH##*/}
-    local DESK_NAME=${DESK_NAME%.*}
     if [ -z "$DESKPATH" ]; then
         echo "No desk activated." 
         echo ""
@@ -168,6 +169,71 @@ cmd_edit() {
     local EDIT_PATH="${DESKS}/${DESKNAME_TO_EDIT}${DESKEXT}"
 
     ${EDITOR:-vi} "$EDIT_PATH" 
+}
+
+cmd_import() {
+    local OPTIND=1
+ 
+    while getopts ":n:" opt; do
+      case $opt in
+        n) local NAME_OVERRIDE=$OPTARG ;;
+      esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [ $# -eq 0 ]; then
+        local SEARCH_DIR="$(pwd)"
+        local SEARCH_NAME="Deskfile"
+    elif [ $# -eq 1 ]; then
+        local TRUEPATH=$(readlink -f "$1")
+
+        if [ -d "${TRUEPATH}" ]; then
+            local SEARCH_DIR="${TRUEPATH}"
+            local SEARCH_NAME="Deskfile"
+        elif [ -f "${TRUEPATH}" ]; then
+            local SEARCH_DIR=$(dirname "${TRUEPATH}")
+            local SEARCH_NAME=$(basename "${TRUEPATH}")
+        fi
+    else
+        echo "Usage: ${PROGRAM} import [-n import-as-name] [path-to-deskfile]"
+        exit 1
+    fi
+
+    local DESKFILE_TO_IMPORT="${SEARCH_DIR}/${SEARCH_NAME}"
+
+    if [ ! -r "${DESKFILE_TO_IMPORT}" ]; then
+        if [[ "${SEARCH_DIR}" == $(pwd) ]]; then
+            echo "Couldn't find ${SEARCH_NAME} in present directory."
+        else
+            echo "Couldn't read ${DESKFILE_TO_IMPORT}."
+        fi
+        exit 2
+    fi
+
+    local DESKEXT=$(get_deskfile_extension)
+
+    if [ -z "${NAME_OVERRIDE}" ]; then
+        if [[ "${SEARCH_NAME}" == "Deskfile" ]]; then
+            local DEST_BASENAME="$(basename "${SEARCH_DIR}")${DESKEXT}"
+        else
+            local DEST_BASENAME="${SEARCH_NAME}"
+        fi
+    else
+        local DEST_BASENAME="${NAME_OVERRIDE}${DESKEXT}"
+    fi
+
+    local DEST_PATH="${DESKS}/${DEST_BASENAME}" 
+
+    ln -s "${DESKFILE_TO_IMPORT}" "${DEST_PATH}"
+    local LN_RETURN="$?"
+
+    if [ "${LN_RETURN}" -eq 0 ]; then
+        echo "Deskfile ${DESKFILE_TO_IMPORT} imported as '$(get_name_from_path "$DEST_PATH")'."
+    else
+        echo "Deskfile failed to import."
+        exit "${LN_RETURN}"
+    fi
 }
 
 ## Utilities
@@ -218,6 +284,13 @@ get_deskfile_extension() {
     fi
 }
 
+# Return a deskfile name from path
+get_name_from_path() {
+    local DESKPATH=$1
+    local DESK_NAME=${DESKPATH##*/}
+    echo "${DESK_NAME%.*}"
+}
+
 
 PROGRAM="${0##*/}"
 
@@ -228,6 +301,7 @@ case "$1" in
     ls|list) shift;            cmd_list "$@" ;;
     go|.) shift;               cmd_go "$@" ;;
     edit) shift;               cmd_edit "$@" ;;
+    import) shift;             cmd_import "$@" ;;
     *)                         cmd_current "$@" ;;
 esac
 exit 0
