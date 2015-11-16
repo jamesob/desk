@@ -7,8 +7,9 @@ _desk() {
     'list:List available desks'
     'ls:List available desks'
     'edit:Edit or create a desk, defaults to current desk'
-    'go:activate a desk'
-    'version:Dhow the desk version.'
+    'go:Activate a desk'
+    '.:Activate a desk'
+    'version:Show the desk version.'
   )
 
   if (( CURRENT == 2 )); then
