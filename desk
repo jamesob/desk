@@ -74,9 +74,9 @@ cmd_init() {
 
     # Since the hook is appended to the rc file, its exit status becomes
     # the exit status of `source $USER_SHELLRC` which typically
-    # indicates if something went wrong. However, $DESK_ENV being void
-    # causes `test` to set exit status to 1. That, however, is part of
-    # desk's normal operation, so we clear exit status here.
+    # indicates if something went wrong. If $DESK_ENV is void, `test`
+    # sets exit status to 1. That, however, is part of desk's normal
+    # operation, so we clear exit status after that.
     if [ "$SHELLTYPE" == "fish" ]; then
       echo "test -n \"\$DESK_ENV\"; and . \"\$DESK_ENV\"; or true" >> "$USER_SHELLRC"
     else
