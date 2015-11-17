@@ -73,9 +73,9 @@ cmd_init() {
     echo "# Hook for desk activation" >> "$USER_SHELLRC"
 
     if [ "$SHELLTYPE" == "fish" ]; then
-      echo "test -n \"\$DESK_ENV\"; and . \"\$DESK_ENV\"" >> "$USER_SHELLRC"
+      echo "test -n \"\$DESK_ENV\"; and . \"\$DESK_ENV\"; or true" >> "$USER_SHELLRC"
     else
-      echo "[ -n \"\$DESK_ENV\" ] && source \"\$DESK_ENV\"" >> "$USER_SHELLRC"
+      echo "[ -n \"\$DESK_ENV\" ] && source \"\$DESK_ENV\" || true" >> "$USER_SHELLRC"
     fi
     
     echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
