@@ -151,6 +151,14 @@ live in `~/.desk/desks` (`$DESK_DESKS_DIR`). If you want to use some other
 location, specify as much in `desk init` and then ensure you set `$DESK_DIR`
 and/or `$DESK_DESKS_DIR` to match in your shell's rc file.
 
+### Shortening invocation
+
+Typing `desk .` frequently can get old; personally, I like to alias this with
+```sh
+alias d.='desk .'
+```
+in my shell rc file.
+
 ### Usage with OS X
 
 Desk won't work when used strictly with `~/.bash_profile` on OS X's terminal, since
