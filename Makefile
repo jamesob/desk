@@ -8,6 +8,10 @@ install:
 	@cp ./desk /usr/bin/desk ||:
 	@echo "Installing desk to /usr/bin/desk"
 
+.PHONY: oh-my-zsh
+oh-my-zsh: 
+	ln -s $(shell pwd)/shell_plugins/zsh $(HOME)/.oh-my-zsh/custom/plugins/desk
+
 .PHONY: uninstall
 uninstall:
 	@rm /usr/bin/desk ||:

@@ -1,0 +1,18 @@
+#compdef desk
+
+local -a _subcommands
+_subcommands=(
+  'help:Print a help message.'
+  'init:Initialize your desk configuration.'
+  'list:List available desks'
+  'ls:List available desks'
+  'edit:Edit or create a desk, defaults to current desk'
+  'go:Activate a desk'
+  '.:Activate a desk'
+  'version:Show the desk version.'
+)
+
+if (( CURRENT == 2 )); then
+  _describe -t commands 'desk subcommand' _subcommands
+  return
+fi

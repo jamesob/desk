@@ -110,20 +110,24 @@ Note that `~/bin` may not exist on your system, or may not be on your PATH. Feel
 to substitute that for another directory, e.g. `/usr/local/bin`, and add `sudo` as
 necessary.
 
-#### Using [Antigen](https://github.com/zsh-users/antigen)
-
-0. Add `antigen bundle jamesob/desk` to your `.zshrc`
-0. Open a new terminal window. Antigen will clone the desk repo and add it to your path.
-
 #### Using [oh-my-zsh](http://ohmyz.sh/)
 
-0. `cd ~/.oh-my-zsh/custom/plugins`
-0. `git clone git@github.com:jamesob/desk.git`
-0. Add desk to your plugin list
+0. `make oh-my-zsh` from within this repo. This sets up a symlink.
 
+or
+
+0. `cd ~/.oh-my-zsh/custom/plugins`
+0. `git clone git@github.com:jamesob/desk.git /tmp/desk && cp -r /tmp/desk/shell_plugins/zsh desk`
+0. Add desk to your plugin list
+ 
+#### Using [Antigen](https://github.com/zsh-users/antigen)
+
+0. Add `antigen bundle jamesob/desk shell_plugins/zsh` to your `.zshrc`
+0. Open a new terminal window. Antigen will clone the desk repo and add it to your path.
+                                       
 #### Using [zgen](https://github.com/tarjoilija/zgen)
 
-0. Add `zgen load jamesob/desk` to your `.zshrc` with your other load commands
+0. Add `zgen load jamesob/desk shell_plugins/zsh` to your `.zshrc` with your other load commands
 0. `rm ~/.zgen/init.zsh`
 0. Start a new shell; zgen will generate a new `init.zsh` and automatically clone the desk repository for you and add it to your path.
 
