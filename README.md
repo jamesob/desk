@@ -182,3 +182,9 @@ fi
 BTC: `18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h`
 
 Half of all tips will be donated to [an organization providing aid to Syrian refugees](http://www.moas.eu/).
+
+#### Donations made on behalf of tippers
+
+| date | amount | organization |
+| ---- | ------ | ------------ |
+| 2015-11-18 | $1.07 | http://moas.eu |
