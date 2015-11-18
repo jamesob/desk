@@ -1,21 +1,18 @@
-
-.PHONY: default
-default:
-	@echo "Desk doesn't need to be compiled. Please run \"sudo make install\" to install desk."
-
 .PHONY: install
 install:
-	@cp ./desk /usr/local/bin/desk ||:
-	@echo "Installing desk to /usr/bin/desk"
+	cp ./desk /usr/local/bin/desk
 
+.PHONY: uninstall
+uninstall:
+	rm /usr/local/bin/desk
+	
 .PHONY: oh-my-zsh
 oh-my-zsh: 
 	ln -s $(shell pwd)/shell_plugins/zsh $(HOME)/.oh-my-zsh/custom/plugins/desk
 
-.PHONY: uninstall
-uninstall:
-	@rm /usr/bin/desk ||:
-	@echo "Removing desk from /usr/bin"
+
+# Test targets
+# ------------
 
 .PHONY: dockerbuild
 dockerbuild:
