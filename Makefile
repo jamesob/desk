@@ -5,7 +5,7 @@ default:
 
 .PHONY: install
 install:
-	@cp ./desk /usr/bin/desk ||:
+	@cp ./desk /usr/local/bin/desk ||:
 	@echo "Installing desk to /usr/bin/desk"
 
 .PHONY: oh-my-zsh
