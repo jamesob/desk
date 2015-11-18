@@ -99,16 +99,20 @@ rendering.
 
 ### Installing
 
-#### Manually
-0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > ~/bin/desk`
-0. `less ~/bin/desk` to make sure you've downloaded what you think you've downloaded.
-0. `chmod +x ~/bin/desk`
-0. `desk init`
-0. Start adding deskfiles to your config directory, e.g. `~/.desk/desks/hacking_gibson.sh`
+Assuming `~/bin` exists and is on the PATH... otherwise, substitute `/usr/local/bin`
+and add `sudo` as needed.
 
-Note that `~/bin` may not exist on your system, or may not be on your PATH. Feel free
-to substitute that for another directory, e.g. `/usr/local/bin`, and add `sudo` as
-necessary.
+0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > ~/bin/desk`
+0. `chmod +x ~/bin/desk`
+
+or
+
+0. `git clone git@github.com:jamesob/desk.git && cd desk && make install`
+
+After that, run `desk init` and start adding deskfiles with either `desk edit [deskfile name]`
+or by manually adding shell scripts into your deskfiles directory (by default `~/.desk/desks/`).
+
+### Enabling shell extensions
 
 #### Using [oh-my-zsh](http://ohmyz.sh/)
 
