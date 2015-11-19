@@ -114,6 +114,16 @@ or by manually adding shell scripts into your deskfiles directory (by default `~
 
 ### Enabling shell extensions
 
+#### Using bash
+
+0. Add `source /path/to/desk/repo/shell_plugins/bash/desk` to your `.bashrc`.
+
+#### Using zsh
+
+0. Add `fpath=(/path/to/desk/repo/shell_plugins/zsh $fpath)` to your `.zshrc`.
+
+Optionally, use one of the zsh plugin frameworks mentioned below.
+
 #### Using [oh-my-zsh](http://ohmyz.sh/)
 
 0. `make oh-my-zsh` from within this repo. This sets up a symlink.
