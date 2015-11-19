@@ -1,4 +1,12 @@
 #compdef desk
+#autoload
+
+_all_desks() {
+  desks=($(desk list | cut -d' ' -f1))
+}
+
+local expl
+local -a desks
 
 local -a _subcommands
 _subcommands=(
@@ -16,3 +24,9 @@ if (( CURRENT == 2 )); then
   _describe -t commands 'desk subcommand' _subcommands
   return
 fi
+
+case "$words[2]" in
+  go|.|edit)
+    _all_desks
+    _wanted desks expl 'desks' compadd -a desks ;;
+esac
