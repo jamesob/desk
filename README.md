@@ -15,6 +15,8 @@ be here somewhere..."), desk helps shorten and document those actions with
 shell aliases and functions, which are then namespaced under a particular
 desk.
 
+<img src='screencap.gif' width=700>
+
 I have a hard time calling this a "workspace manager" with a straight
 face -- it's basically just a shell script that sources another shell script in a new shell.
 But I often find myself working in multiple different code trees simultaneously:
@@ -49,8 +51,6 @@ Usage:
 Since desk spawns a shell, to deactivate and "pop" out a desk, you
 simply need to exit or otherwise end the current shell process.
 ```
-
-<img src='screencap.gif' width=700>
 
 For example, given this deskfile (`~/.desk/desks/tf.sh`):
 ```sh
@@ -99,13 +99,19 @@ rendering.
 
 ### Installing
 
+#### With homebrew
+
+`brew install desk`
+
+#### With curl
+
 Assuming `~/bin` exists and is on the PATH... otherwise, substitute `/usr/local/bin`
 and add `sudo` as needed.
 
 0. `curl https://raw.githubusercontent.com/jamesob/desk/master/desk > ~/bin/desk`
 0. `chmod +x ~/bin/desk`
 
-or
+#### With git
 
 0. `git clone git@github.com:jamesob/desk.git && cd desk && sudo make install`
 
