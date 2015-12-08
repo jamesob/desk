@@ -8,7 +8,7 @@ DESKS="${DESK_DESKS_DIR:-$PREFIX/desks}"
 ## Commands
 
 cmd_version() {
-    echo "◲  desk 0.3.1"
+    echo "◲  desk 0.3.2"
 }
 
 
@@ -25,8 +25,10 @@ Usage:
         Initialize desk configuration.
     $PROGRAM (list|ls)
         List all desks along with a description.
-    $PROGRAM (.|go) desk-name
-        Activate a desk.
+    $PROGRAM (.|go) <desk-name> [shell-args...]
+        Activate a desk. Extra arguments are passed onto shell.
+    $PROGRAM run <desk-name> <cmd>
+        Run a command within a desk's environment then exit. Think '\$SHELL -c'.
     $PROGRAM edit [desk-name]
         Edit (or create) a deskfile with the name specified, otherwise 
         edit the active deskfile.
@@ -92,13 +94,24 @@ cmd_go() {
     local DESKEXT=$(get_deskfile_extension)
     local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}")"
 
+    # Shift desk name so we can forward on all arguments to the shell.
+    shift;
+
     if [ -z "$DESKPATH" ]; then 
         echo "Desk $TODESK (${TODESK}${DESKEXT}) not found in $DESKS"
         exit 1
     else
         local SHELL_EXEC="$(get_running_shell)"
-        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}"
+        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}" "$@"
     fi
+}
+
+
+cmd_run() {
+    local TODESK="$1"
+    shift;
+    local CMDSTR="$@"
+    cmd_go "$TODESK" -ic "$@"
 }
 
 
@@ -131,7 +144,7 @@ cmd_current() {
         echo "No desk activated." 
         echo ""
         cmd_list
-        exit 2
+        # exit 2
     else
         echo "$DESK_NAME"
         echo_description "$DESKPATH"
@@ -232,6 +245,7 @@ case "$1" in
     version|--version) shift;  cmd_version "$@" ;;
     ls|list) shift;            cmd_list "$@" ;;
     go|.) shift;               cmd_go "$@" ;;
+    run) shift;                cmd_run "$@" ;;
     edit) shift;               cmd_edit "$@" ;;
     *)                         cmd_current "$@" ;;
 esac

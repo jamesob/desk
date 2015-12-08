@@ -9,11 +9,11 @@ _desk() {
 
     case ${COMP_CWORD} in
         1)
-            COMPREPLY=($(compgen -W "edit . go help init list ls version" ${cur}))
+            COMPREPLY=($(compgen -W "edit . go run help init list ls version" ${cur}))
             ;;
         2)
             case ${prev} in
-                edit|go|.)
+                edit|go|.|run)
                     if [[ -d $DESKS ]]; then
                         local desks=$(desk list | cut -d' ' -f1)
                     else
