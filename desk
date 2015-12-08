@@ -110,7 +110,6 @@ cmd_go() {
 cmd_run() {
     local TODESK="$1"
     shift;
-    local CMDSTR="$@"
     cmd_go "$TODESK" -ic "$@"
 }
 

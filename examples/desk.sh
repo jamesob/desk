@@ -9,3 +9,9 @@ alias lint="make lint"
 checkout_pr () {
   git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1;
 }
+
+test() {
+  make lint
+  SHELL_CMD='-c ./run_tests.sh' make bash zsh
+  SHELL_CMD='-c ./run_tests.fish' make fish
+}
