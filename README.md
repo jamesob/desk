@@ -27,21 +27,23 @@ There are no dependencies other than `bash`. Desk is explicitly tested with `bas
 `zsh`, and `fish`.
 
 ```sh
-◲  desk 0.3.1
+◲  desk 0.3.2
 
 Usage:
 
     desk
-        List the current desk and any associated aliases. If no desk
+        List the current desk and any associated aliases. If no desk 
         is being used, display available desks.
     desk init
         Initialize desk configuration.
     desk (list|ls)
         List all desks along with a description.
-    desk (.|go) desk-name
-        Activate a desk.
+    desk (.|go) <desk-name> [shell-args...]
+        Activate a desk. Extra arguments are passed onto shell.
+    desk run <desk-name> <cmd>
+        Run a command within a desk's environment then exit. Think '$SHELL -c'.
     desk edit [desk-name]
-        Edit (or create) a deskfile with the name specified, otherwise
+        Edit (or create) a deskfile with the name specified, otherwise 
         edit the active deskfile.
     desk help
         Show this text.

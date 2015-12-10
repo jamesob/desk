@@ -22,6 +22,8 @@ echo $HELP | grep 'desk (list|ls)' >/dev/null
 ensure $? "Desk help doesn't contain list"
 echo $HELP | grep 'desk (.|go)' >/dev/null
 ensure $? "Desk help doesn't contain go"
+echo $HELP | grep 'desk run' >/dev/null
+ensure $? "Desk help doesn't contain run"
 echo $HELP | grep 'desk help' >/dev/null
 ensure $? "Desk help doesn't contain help"
 echo $HELP | grep 'desk version' >/dev/null
@@ -39,6 +41,8 @@ echo $LIST | grep "python_project - desk for working on a Python project" >/dev/
 ensure $? "Desk list missing python_project (with DESK_DESKS_DIR)"
 echo $LIST | grep "terraform - desk for doing work on a terraform-based repository" >/dev/null
 ensure $? "Desk list missing terraform (with DESK_DESKS_DIR)"
+echo $LIST | grep "hello - simple desk that says hello" >/dev/null
+ensure $? "Desk list missing hello (with DESK_DESKS_DIR)"
 
 rm -rf "$HOME/.desk/desks"
 ln -s "$HOME/examples" "$HOME/.desk/desks"
@@ -50,6 +54,8 @@ echo $LIST | grep "python_project - desk for working on a Python project" >/dev/
 ensure $? "Desk list missing python_project (with symlink)"
 echo $LIST | grep "terraform - desk for doing work on a terraform-based repository" >/dev/null
 ensure $? "Desk list missing terraform (with symlink)"
+echo $LIST | grep "hello - simple desk that says hello" >/dev/null
+ensure $? "Desk list missing hello (with symlink)"
 
 mkdir ~/terraform-repo
 
@@ -62,5 +68,13 @@ echo $CURRENT | grep 'apply - Run `terraform apply` with proper AWS var config' 
 ensure $? "Desk current terraform missing apply"
 echo $CURRENT | grep 'config - Set up terraform config: <config_key>' >/dev/null
 ensure $? "Desk current terraform missing config"
+
+RAN=$(desk run hello 'howdy james!')
+echo $RAN | grep 'howdy there james!' >/dev/null
+ensure $? "Run in desk 'hello' didn't work with howdy alias"
+
+RAN=$(desk run hello 'hi j')
+echo $RAN | grep 'hi, j!' >/dev/null
+ensure $? "Run in desk 'hello' didn't work with hi function"
 
 echo "tests pass."
