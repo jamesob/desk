@@ -19,7 +19,7 @@ cmd_usage() {
 Usage:
 
     $PROGRAM
-        List the current desk and any associated aliases. If no desk 
+        List the current desk and any associated aliases. If no desk
         is being used, display available desks.
     $PROGRAM init
         Initialize desk configuration.
@@ -30,7 +30,7 @@ Usage:
     $PROGRAM run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '\$SHELL -c'.
     $PROGRAM edit [desk-name]
-        Edit (or create) a deskfile with the name specified, otherwise 
+        Edit (or create) a deskfile with the name specified, otherwise
         edit the active deskfile.
     $PROGRAM help
         Show this text.
@@ -84,7 +84,7 @@ cmd_init() {
     else
       echo "[ -n \"\$DESK_ENV\" ] && source \"\$DESK_ENV\" || true" >> "$USER_SHELLRC"
     fi
-    
+
     echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
 }
 
@@ -97,7 +97,7 @@ cmd_go() {
     # Shift desk name so we can forward on all arguments to the shell.
     shift;
 
-    if [ -z "$DESKPATH" ]; then 
+    if [ -z "$DESKPATH" ]; then
         echo "Desk $TODESK (${TODESK}${DESKEXT}) not found in $DESKS"
         exit 1
     else
@@ -114,56 +114,95 @@ cmd_run() {
 }
 
 
+# Usage:        desk list [options]
+# Description:  List all desks along with a description
+# --only-names: List only the names of the desks
+# --no-format:  Use ' - ' to separate names from descriptions
 cmd_list() {
     if [ ! -d "${DESKS}/" ]; then
-        echo "No desk dir! Run 'desk init'." 
+        echo "No desk dir! Run 'desk init'."
+        exit 1
+    fi
+    local SHOW_DESCRIPTIONS DESKEXT AUTO_ALIGN name desc len longest out
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --only-names) SHOW_DESCRIPTIONS=false && AUTO_ALIGN=false ;;
+            --no-format) AUTO_ALIGN=false ;;
+        esac
+        shift
+    done
+
+    DESKEXT=$(get_deskfile_extension)
+    out=""
+    longest=0
+
+    while read -d '' -r f; do
+        name=$(basename "${f/${DESKEXT}//}")
+        if [[ "$SHOW_DESCRIPTIONS" = false ]]; then
+            out+="$name"$'\n'
+        else
+            desc=$(echo_description "$f")
+            out+="$name - $desc"$'\n'
+            len=${#name}
+            (( len > longest )) && longest=$len
+        fi
+    done < <(find "${DESKS}/" -name "*${DESKEXT}" -print0)
+    if [[ "$AUTO_ALIGN" != false ]]; then
+        print_aligned "$out" "$longest"
+    else
+        printf "%s" "$out"
+    fi
+}
+
+# Usage:	     desk [options]
+# Description: List the current desk and any associated aliases. If no desk is being used, display available desks
+# --no-format: Use ' - ' to separate alias/function names from their descriptions
+cmd_current() {
+    if [ -z "$DESK_ENV" ]; then
+        printf "No desk activated.\n\n%s" "$(cmd_list)"
         exit 1
     fi
 
-    local DESKEXT=$(get_deskfile_extension)
-                       
-    find "${DESKS}/" -name "*${DESKEXT}" -print0 | while read -d '' -r f; do
-        local name=$(basename "${f/${DESKEXT}//}") 
-        local desc=$(echo_description "$f")
-
-        if [ -z "$desc" ]; then
-            echo "$name"
-        else
-            echo "$name" "-" "$desc"
-        fi
-    done
-}
-
-
-cmd_current() {
     local DESKPATH=$DESK_ENV
     local DESK_NAME=${DESKPATH##*/}
     local DESK_NAME=${DESK_NAME%.*}
-    if [ -z "$DESKPATH" ]; then
-        echo "No desk activated." 
-        echo ""
-        cmd_list
-        # exit 2
-    else
-        echo "$DESK_NAME"
-        echo_description "$DESKPATH"
-        local CALLABLES=$(get_callables "$DESKPATH")
+    local CALLABLES=$(get_callables "$DESKPATH")
+    local AUTO_ALIGN len longest out
 
-        [ -z "$CALLABLES" ] || echo ""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --no-format) AUTO_ALIGN=false ;;
+        esac
+        shift
+    done
+    printf "%s - %s\n" "$DESK_NAME" "$(echo_description "$DESKPATH")"
 
+    if [[ -n "$CALLABLES" ]]; then
+
+        longest=0
+        out=$'\n'
         for NAME in $CALLABLES; do
             # Last clause in the grep regexp accounts for fish functions.
+            len=$((${#NAME} + 2))
+            (( len > longest )) && longest=$len
             local DOCLINE=$(
                 grep -B 1 -E \
                     "^(alias ${NAME}=|(function )?${NAME}( )?\()|function $NAME" "$DESKPATH" \
                     | grep "#")
 
             if [ -z "$DOCLINE" ]; then
-                echo "  ${NAME}"
+                out+="  ${NAME}"$'\n'
             else
-                echo "  ${NAME} -" "${DOCLINE##\# }"
+                out+="  ${NAME} - ${DOCLINE##\# }"$'\n'
             fi
         done
+
+        if [[ "$AUTO_ALIGN" != false ]]; then
+          print_aligned "$out" "$longest"
+        else
+          printf "%s" "$out"
+        fi
     fi
 }
 
@@ -184,7 +223,7 @@ cmd_edit() {
     local DESKEXT=$(get_deskfile_extension)
     local EDIT_PATH="${DESKS}/${DESKNAME_TO_EDIT}${DESKEXT}"
 
-    ${EDITOR:-vi} "$EDIT_PATH" 
+    ${EDITOR:-vi} "$EDIT_PATH"
 }
 
 ## Utilities
@@ -220,7 +259,7 @@ get_running_shell() {
             exit
         fi
     fi
-    
+
     # Fall back to $SHELL otherwise.
     basename "$SHELL"
     exit
@@ -233,6 +272,14 @@ get_deskfile_extension() {
     else
         echo '.sh'
     fi
+}
+
+# Echo first argument as key/value pairs aligned into two columns; second argument is the longest key
+print_aligned() {
+  local out=$1 longest=$2
+  printf "%s" "$out" | awk -v padding="$longest" -F' - ' '{
+    printf "%-*s %s\n", padding, $1, substr($0, index($0, " - ")+2, length($0))
+  }'
 }
 
 
