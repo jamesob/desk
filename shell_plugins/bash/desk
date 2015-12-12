@@ -15,7 +15,7 @@ _desk() {
             case ${prev} in
                 edit|go|.|run)
                     if [[ -d $DESKS ]]; then
-                        local desks=$(desk list | cut -d' ' -f1)
+                        local desks=$(desk list --only-names)
                     else
                         local desks=""
                     fi

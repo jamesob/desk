@@ -2,7 +2,7 @@
 #autoload
 
 _all_desks() {
-  desks=($(desk list | cut -d' ' -f1))
+  desks=($(desk list --only-names))
 }
 
 local expl
