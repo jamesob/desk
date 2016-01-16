@@ -17,16 +17,13 @@ end
 complete -c desk -f -n '__fish_desk_no_subcommand' -a init -d 'Initialize desk configuration'
 
 # desk list|ls
-complete -c desk -f -n '__fish_desk_no_subcommand' -a "ls" -d 'List all desks along with a description'
-complete -c desk -A -f -n '__fish_seen_subcommand_from list' -l only-names -d 'List only the names of the desks'
-complete -c desk -A -f -n '__fish_seen_subcommand_from list' -l no-format -d "Use ' - ' to separate names from descriptions"
-complete -c desk -A -f -n '__fish_seen_subcommand_from ls' -l only-names -d 'List only the names of the desks'
-complete -c desk -A -f -n '__fish_seen_subcommand_from ls' -l no-format -d "Use ' - ' to separate names from descriptions"
+complete -c desk -f -n '__fish_desk_no_subcommand' -a "ls list" -d 'List all desks along with a description'
+complete -c desk -A -f -n '__fish_seen_subcommand_from ls list' -l only-names -d 'List only the names of the desks'
+complete -c desk -A -f -n '__fish_seen_subcommand_from ls list' -l no-format -d "Use ' - ' to separate names from descriptions"
 
 # desk go|.
-complete -c desk -f -n '__fish_desk_no_subcommand' -a "go" -d 'Activate a desk. Extra arguments are passed onto shell'
-complete -c desk -A -f -n '__fish_seen_subcommand_from .' -a "(desk ls --only-names)" -d "Desk"
-complete -c desk -A -f -n '__fish_seen_subcommand_from go' -a "(desk ls --only-names)" -d "Desk"
+complete -c desk -f -n '__fish_desk_no_subcommand' -a "go ." -d 'Activate a desk. Extra arguments are passed onto shell'
+complete -c desk -A -f -n '__fish_seen_subcommand_from . go' -a "(desk ls --only-names)" -d "Desk"
 
 # desk run
 complete -c desk -f -n '__fish_desk_no_subcommand' -a run -d 'Run a command within a desk\'s environment then exit'
