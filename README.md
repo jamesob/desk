@@ -32,7 +32,7 @@ There are no dependencies other than `bash`. Desk is explicitly tested with `bas
 Usage:
 
     desk
-        List the current desk and any associated aliases. If no desk 
+        List the current desk and any associated aliases. If no desk
         is being used, display available desks.
     desk init
         Initialize desk configuration.
@@ -43,7 +43,7 @@ Usage:
     desk run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '$SHELL -c'.
     desk edit [desk-name]
-        Edit (or create) a deskfile with the name specified, otherwise 
+        Edit (or create) a deskfile with the name specified, otherwise
         edit the active deskfile.
     desk help
         Show this text.
@@ -122,13 +122,23 @@ or by manually adding shell scripts into your deskfiles directory (by default `~
 
 ### Enabling shell extensions
 
+**NB**: Shell extensions are automatically enabled if Desk is installed via Homebrew.
+
 #### Using bash
 
 0. Add `source /path/to/desk/repo/shell_plugins/bash/desk` to your `.bashrc`.
 
+#### Using fish
+
+```fish
+mkdir -p ~/.config/fish/completions
+cp /path/to/desk/repo/shell_plugins/fish/desk.fish ~/.config/fish/completions
+```
+
 #### Using zsh
 
 0. Add `fpath=(/path/to/desk/repo/shell_plugins/zsh $fpath)` to your `.zshrc`.
+
 
 Optionally, use one of the zsh plugin frameworks mentioned below.
 
@@ -141,12 +151,12 @@ or
 0. `cd ~/.oh-my-zsh/custom/plugins`
 0. `git clone git@github.com:jamesob/desk.git /tmp/desk && cp -r /tmp/desk/shell_plugins/zsh desk`
 0. Add desk to your plugin list
- 
+
 #### Using [Antigen](https://github.com/zsh-users/antigen)
 
 0. Add `antigen bundle jamesob/desk shell_plugins/zsh` to your `.zshrc`
 0. Open a new terminal window. Antigen will clone the desk repo and add it to your path.
-                                       
+
 #### Using [zgen](https://github.com/tarjoilija/zgen)
 
 0. Add `zgen load jamesob/desk shell_plugins/zsh` to your `.zshrc` with your other load commands
