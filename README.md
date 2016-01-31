@@ -27,7 +27,7 @@ There are no dependencies other than `bash`. Desk is explicitly tested with `bas
 `zsh`, and `fish`.
 
 ```sh
-◲  desk 0.3.2
+◲  desk 0.4.1
 
 Usage:
 
@@ -40,6 +40,7 @@ Usage:
         List all desks along with a description.
     desk (.|go) <desk-name> [shell-args...]
         Activate a desk. Extra arguments are passed onto shell.
+        Without a name specified, it tries activating the desk specified in the ./Deskfile file.
     desk run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '$SHELL -c'.
     desk edit [desk-name]
@@ -97,7 +98,7 @@ desk for doing work on a terraform repo
 Basically, desk just associates a shell script (`name.sh`) with a name. When
 you call `desk . name`, desk drops you into a shell where `name.sh` has been
 executed, and then desk extracts out certain comments in `name.sh` for useful
-rendering.
+rendering. If you call `desk .` without any desk specified, desk will look for a `Deskfile` file in the current directory and uses its content as the name.
 
 ### Installing
 
