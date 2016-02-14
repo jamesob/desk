@@ -27,6 +27,7 @@ Usage:
         List all desks along with a description.
     $PROGRAM (.|go) <desk-name> [shell-args...]
         Activate a desk. Extra arguments are passed onto shell.
+        Without a name specified, it tries activating the desk specified in the ./.desk file.
     $PROGRAM run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '\$SHELL -c'.
     $PROGRAM edit [desk-name]
@@ -91,6 +92,11 @@ cmd_init() {
 
 cmd_go() {
     local TODESK="$1"
+    if [ -z "$TODESK" -a -f "${PWD}/Deskfile" ]; then
+	     # if no desk is specified try the Deskfile file in the current directory
+       read TODESK < "${PWD}/Deskfile"
+    fi
+
     local DESKEXT=$(get_deskfile_extension)
     local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}")"
 
