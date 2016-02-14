@@ -7,13 +7,19 @@ Lightweight workspace manager for the shell.
 
 Desk makes it easy to flip back and forth between different project contexts in
 your favorite shell. Change directory, activate a virtualenv or rvm, load
-in domain-specific aliases, functions, arbitrary shell files, all in a
-single command.
+in domain-specific aliases, environment variables, functions, arbitrary shell files, 
+all in a single command.
 
 Instead of relying on `CTRL-R` to execute and recall ("that command's gotta
 be here somewhere..."), desk helps shorten and document those actions with
 shell aliases and functions, which are then namespaced under a particular
 desk.
+
+Because Deskfiles are just enriched shell scripts, the possibilities are 
+endless. For example, when doing work on AWS I have desk 
+securely load AWS API keys into environment variables via 
+[`pass`](https://www.passwordstore.org/) -- no effort on my part, and no 
+risk of accidentally persisting that sensitive information to a history file.
 
 <img src='screencap.gif' width=700>
 
