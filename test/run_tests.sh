@@ -129,4 +129,34 @@ RAN=$(desk run hello 'hi j')
 echo "$RAN" | grep 'hi, j!' >/dev/null
 ensure $? "Run in desk 'hello' didn't work with hi function"
 
+## `desk go`
+
+RAN=$(desk go example-project/Deskfile -c 'desk ; exit')
+echo "$RAN" | grep "python_project - desk for working on a Python project" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/Deskfile)"
+echo "$RAN" | grep -E "req\s+Install requirements" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/Deskfile)"
+echo "$RAN" | grep -E "t\s+Run unittests with nose" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/Deskfile)"
+
+RAN=$(desk go example-project/ -c 'desk ; exit')
+echo "$RAN" | grep "python_project - desk for working on a Python project" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "req\s+Install requirements" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "t\s+Run unittests with nose" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+
+pushd example-project
+
+RAN=$(desk go . -c 'desk ; exit')
+echo "$RAN" | grep "python_project - desk for working on a Python project" >/dev/null
+ensure $? "Deskfile invocation didn't work (./)"
+echo "$RAN" | grep -E "req\s+Install requirements" >/dev/null
+ensure $? "Deskfile invocation didn't work (./)"
+echo "$RAN" | grep -E "t\s+Run unittests with nose" >/dev/null
+ensure $? "Deskfile invocation didn't work (./)"
+
+popd
+                     
 echo "tests pass."

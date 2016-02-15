@@ -33,7 +33,7 @@ There are no dependencies other than `bash`. Desk is explicitly tested with `bas
 `zsh`, and `fish`.
 
 ```sh
-◲  desk 0.4.1
+◲  desk 0.5.0
 
 Usage:
 
@@ -44,8 +44,10 @@ Usage:
         Initialize desk configuration.
     desk (list|ls)
         List all desks along with a description.
-    desk (.|go) <desk-name> [shell-args...]
-        Activate a desk. Extra arguments are passed onto shell.
+    desk (.|go) [<desk-name-or-path> [shell-args...]]
+        Activate a desk. Extra arguments are passed onto shell. If called with
+        no arguments, look for a Deskfile in the current directory. If not a
+        recognized desk, try as a path to directory containing a Deskfile.
     desk run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '$SHELL -c'.
     desk edit [desk-name]
@@ -95,9 +97,9 @@ $ desk
 tf
 desk for doing work on a terraform repo
 
-  set_aws_env - Set up AWS env variables: <key id> <secret>
-  plan - Run `terraform plan` with proper AWS var config
-  apply - Run `terraform apply` with proper AWS var config
+  set_aws_env   Set up AWS env variables: <key id> <secret>
+  plan          Run `terraform plan` with proper AWS var config
+  apply         Run `terraform apply` with proper AWS var config
 ```
 
 Basically, desk just associates a shell script (`name.sh`) with a name. When
@@ -179,7 +181,23 @@ Desk does pay attention to certain kinds of comments, though.
 
 - *alias and function docs*: if the line above an alias or function is a
   comment, it will be used as documentation.
+ 
+### Deskfiles
 
+Deskfiles are just shell scripts at the root of a project directory that 
+adhere to the conventions above. These can be put into version control to
+formalize and ease common development tasks like running tests or doing
+local builds.
+
+For example, if we have some directory or repository called `myproject`, if
+we create `myproject/Deskfile`, we'll be able to do any of the following:
+```sh
+$ desk go /path/to/myproject/
+$ desk go /path/to/myproject/Deskfile
+myproject/ $ desk go .
+myproject/ $ desk go
+```
+ 
 ### Sharing deskfiles across computers
 
 Of course, the desk config directory (by default `~/.desks`) can be a symlink
