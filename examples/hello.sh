@@ -7,4 +7,4 @@ hi() {
 }
 
 # Use if you're from Texas.
-alias howdy="echo howdy there"
+alias howdy="echo howdy y\'all"
