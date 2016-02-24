@@ -129,4 +129,34 @@ RAN=$(desk run hello 'hi j')
 echo "$RAN" | grep 'hi, j!' >/dev/null
 ensure $? "Run in desk 'hello' didn't work with hi function"
 
+## `desk go`
+
+RAN=$(desk go example-project/Deskfile -c 'desk ; exit')
+echo "$RAN" | grep "example-project - simple desk that says hello" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "hi\s+" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "howdy\s+" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+
+RAN=$(desk go example-project/ -c 'desk ; exit')
+echo "$RAN" | grep "example-project - simple desk that says hello" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "hi\s+" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "howdy\s+" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+
+pushd example-project
+
+RAN=$(desk go . -c 'desk ; exit')
+echo "$RAN" | grep "example-project - simple desk that says hello" >/dev/null
+ensure $? "Deskfile invocation didn't work (./)"
+echo "$RAN" | grep -E "hi\s+" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+echo "$RAN" | grep -E "howdy\s+" >/dev/null
+ensure $? "Deskfile invocation didn't work (example-project/)"
+
+popd
+                     
 echo "tests pass."

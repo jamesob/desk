@@ -3,12 +3,13 @@
 
 PREFIX="${DESK_DIR:-$HOME/.desk}"
 DESKS="${DESK_DESKS_DIR:-$PREFIX/desks}"
+DESKFILE_NAME=Deskfile
 
 
 ## Commands
 
 cmd_version() {
-    echo "◲  desk 0.4.1"
+    echo "◲  desk 0.5.0"
 }
 
 
@@ -25,8 +26,10 @@ Usage:
         Initialize desk configuration.
     $PROGRAM (list|ls)
         List all desks along with a description.
-    $PROGRAM (.|go) <desk-name> [shell-args...]
-        Activate a desk. Extra arguments are passed onto shell.
+    $PROGRAM (.|go) [<desk-name-or-path> [shell-args...]]
+        Activate a desk. Extra arguments are passed onto shell. If called with
+        no arguments, look for a Deskfile in the current directory. If not a
+        recognized desk, try as a path to directory containing a Deskfile.
     $PROGRAM run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '\$SHELL -c'.
     $PROGRAM edit [desk-name]
@@ -90,9 +93,34 @@ cmd_init() {
 
 
 cmd_go() {
+    # TODESK ($1) may either be
+    #
+    #   - the name of a desk in $DESKS/
+    #   - a path to a Deskfile 
+    #   - a directory containing a Deskfile
+    #   - empty -> `./Deskfile`
+    #
     local TODESK="$1"
     local DESKEXT=$(get_deskfile_extension)
-    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}")"
+    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}" 2>/dev/null)"
+
+    local POSSIBLE_DESKFILE_DIR="${TODESK%$DESKFILE_NAME}"
+    if [ -z "$POSSIBLE_DESKFILE_DIR" ]; then
+      POSSIBLE_DESKFILE_DIR="."
+    fi
+
+    # If nothing could be found in $DESKS/, check to see if this is a path to
+    # a Deskfile.
+    if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
+      if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
+        echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
+        exit 1
+      fi
+
+      local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
+      DESKPATH="${REALPATH}/${DESKFILE_NAME}"
+      TODESK=$(basename "$REALPATH")
+    fi
 
     # Shift desk name so we can forward on all arguments to the shell.
     shift;
@@ -165,8 +193,6 @@ cmd_current() {
     fi
 
     local DESKPATH=$DESK_ENV
-    local DESK_NAME=${DESKPATH##*/}
-    local DESK_NAME=${DESK_NAME%.*}
     local CALLABLES=$(get_callables "$DESKPATH")
     local AUTO_ALIGN len longest out
 

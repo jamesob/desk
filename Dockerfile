@@ -13,6 +13,10 @@ ADD test/run_tests.sh run_tests.sh
 ADD test/run_tests.fish run_tests.fish
 ADD examples examples
 RUN mkdir -p .config/fish && touch .config/fish/config.fish
-RUN chown -R $USERNAME:$USERNAME .zshrc examples run_tests.fish run_tests.sh .bashrc .config
+
+# Set up test Deskfile
+RUN mkdir -p example-project && cp examples/hello.sh example-project/Deskfile
+
+RUN chown -R $USERNAME:$USERNAME .zshrc example-project examples run_tests.fish run_tests.sh .bashrc .config
 
 USER $USERNAME
