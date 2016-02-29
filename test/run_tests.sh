@@ -122,7 +122,7 @@ echo "$CURRENT" | grep 'config - Set up terraform config: <config_key>' >/dev/nu
 ensure $? "Desk current terraform missing config"
 
 RAN=$(desk run hello 'howdy james!')
-echo "$RAN" | grep 'howdy y'"'"' james!' >/dev/null
+echo "$RAN" | grep 'howdy y'"'"'all james!' >/dev/null
 ensure $? "Run in desk 'hello' didn't work with howdy alias"
 
 RAN=$(desk run hello 'hi j')
