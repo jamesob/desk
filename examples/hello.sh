@@ -6,5 +6,6 @@ hi() {
   echo "hi, ${1}!"
 }
 
-# Use if you're from Texas.
-alias howdy="echo howdy there"
+# Use if you're from Texas. 
+alias howdy="echo howdy y\'all"
+
