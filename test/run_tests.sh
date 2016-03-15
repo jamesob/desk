@@ -127,7 +127,7 @@ echo "$ISITTHERE" | grep -B 1 export
 
 CURRENT=$(DESK_ENV=$HOME/.desk/desks/hello.sh desk)
 echo "$CURRENT"
-echo "$CURRENT" | grep 'MyName     Why should I always type my name' >/dev/null
+echo "$CURRENT" | grep 'MyName  Why should I always type my name' >/dev/null
 ensure $? "Desk current hello missing exported environment variable"
 
 
