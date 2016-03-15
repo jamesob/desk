@@ -129,6 +129,10 @@ RAN=$(desk run hello 'hi j')
 echo "$RAN" | grep 'hi, j!' >/dev/null
 ensure $? "Run in desk 'hello' didn't work with hi function"
 
+RAN=$(desk run hello 'echo $MyName')
+echo "$RAN" | grep 'James' >/dev/null
+ensure $? "Run in desk 'hello' didn't work with MyName exported variable"
+
 ## `desk go`
 
 RAN=$(desk go example-project/Deskfile -c 'desk ; exit')
