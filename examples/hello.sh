@@ -9,3 +9,6 @@ hi() {
 # Use if you're from Texas. 
 alias howdy="echo howdy y\'all"
 
+# Why should I always type my name
+export MyName="James"
+

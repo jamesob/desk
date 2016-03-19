@@ -121,6 +121,12 @@ ensure $? "Desk current terraform missing apply"
 echo "$CURRENT" | grep 'config - Set up terraform config: <config_key>' >/dev/null
 ensure $? "Desk current terraform missing config"
 
+# testing for exported variables
+CURRENT=$(DESK_ENV=$HOME/.desk/desks/hello.sh desk)
+echo "$CURRENT" | grep 'MyName  Why should I always type my name' >/dev/null
+ensure $? "Desk current hello missing exported environment variable"
+
+
 RAN=$(desk run hello 'howdy james!')
 echo "$RAN" | grep 'howdy y'"'"'all james!' >/dev/null
 ensure $? "Run in desk 'hello' didn't work with howdy alias"
@@ -128,6 +134,10 @@ ensure $? "Run in desk 'hello' didn't work with howdy alias"
 RAN=$(desk run hello 'hi j')
 echo "$RAN" | grep 'hi, j!' >/dev/null
 ensure $? "Run in desk 'hello' didn't work with hi function"
+
+RAN=$(desk run hello 'echo $MyName')
+echo "$RAN" | grep 'James' >/dev/null
+ensure $? "Run in desk 'hello' didn't work with MyName exported variable"
 
 ## `desk go`
 

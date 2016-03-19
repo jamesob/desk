@@ -185,7 +185,7 @@ cmd_list() {
 
 # Usage:	     desk [options]
 # Description: List the current desk and any associated aliases. If no desk is being used, display available desks
-# --no-format: Use ' - ' to separate alias/function names from their descriptions
+# --no-format: Use ' - ' to separate alias/export/function names from their descriptions
 cmd_current() {
     if [ -z "$DESK_ENV" ]; then
         printf "No desk activated.\n\n%s" "$(cmd_list)"
@@ -214,7 +214,7 @@ cmd_current() {
             (( len > longest )) && longest=$len
             local DOCLINE=$(
                 grep -B 1 -E \
-                    "^(alias ${NAME}=|(function )?${NAME}( )?\()|function $NAME" "$DESKPATH" \
+                    "^(alias ${NAME}=|export ${NAME}=|(function )?${NAME}( )?\()|function $NAME" "$DESKPATH" \
                     | grep "#")
 
             if [ -z "$DOCLINE" ]; then
@@ -262,11 +262,12 @@ echo_description() {
     echo "${descline##*Description: }"
 }
 
-# Echo a list of aliases and functions for a given desk
+# Echo a list of aliases, exports, and functions for a given desk
 get_callables() {
     local DESKPATH=$1
-    grep -E "^(alias |(function )?${FNAME_CHARS}+ ?\()|function $NAME" "$DESKPATH" \
+    grep -E "^(alias |export |(function )?${FNAME_CHARS}+ ?\()|function $NAME" "$DESKPATH" \
         | sed 's/alias \([^= ]*\)=.*/\1/' \
+        | sed 's/export \([^= ]*\)=.*/\1/' \
         | sed -E "s/(function )?(${FNAME_CHARS}+) ?\(\).*/\2/" \
         | sed -E "s/function (${FNAME_CHARS}+).*/\1/"
 }
