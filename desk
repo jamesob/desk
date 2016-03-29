@@ -274,6 +274,7 @@ get_callables() {
 
 get_running_shell() {
     # Echo the name of the parent shell via procfs, if we have it available.
+    # Otherwise, try to use ps with bash's parent pid.
     if [ -e /proc ]; then
         # Get cmdline procfile of the process running this script.
         local CMDLINE_FILE="/proc/$(grep PPid /proc/$$/status | cut -f2)/cmdline"
@@ -282,12 +283,17 @@ get_running_shell() {
             # Strip out any verion that may be attached to the shell executable.
             # Strip leading dash for login shells.
             local CMDLINE_SHELL=$(sed -r -e 's/\x0.*//' -e 's/^-//' "$CMDLINE_FILE")
-
-            if [ ! -z "$CMDLINE_SHELL" ]; then
-                basename "$CMDLINE_SHELL"
-                exit
-            fi
         fi
+    else
+        # Strip leading dash for login shells.
+        # If the parent process is a login shell, guess bash.
+        local CMDLINE_SHELL=$(ps -o pid,args -p $PPID | tail -1 | cut -d' ' -f2 \
+            | sed -e 's/login/bash/' -e 's/^-//')
+    fi
+
+    if [ ! -z "$CMDLINE_SHELL" ]; then
+        basename "$CMDLINE_SHELL"
+        exit
     fi
 
     # Fall back to $SHELL otherwise.
