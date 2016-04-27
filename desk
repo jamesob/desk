@@ -96,7 +96,7 @@ cmd_go() {
     # TODESK ($1) may either be
     #
     #   - the name of a desk in $DESKS/
-    #   - a path to a Deskfile 
+    #   - a path to a Deskfile
     #   - a directory containing a Deskfile
     #   - empty -> `./Deskfile`
     #
@@ -287,8 +287,7 @@ get_running_shell() {
     else
         # Strip leading dash for login shells.
         # If the parent process is a login shell, guess bash.
-        local CMDLINE_SHELL=$(ps -o pid,args -p $PPID | tail -1 | cut -d' ' -f2 \
-            | sed -e 's/login/bash/' -e 's/^-//')
+        local CMDLINE_SHELL=$(ps -o args -p $PPID | tail -1 | sed -e 's/login/bash/' -e 's/^-//')
     fi
 
     if [ ! -z "$CMDLINE_SHELL" ]; then
