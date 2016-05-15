@@ -130,7 +130,11 @@ cmd_go() {
         exit 1
     else
         local SHELL_EXEC="$(get_running_shell)"
-        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}" "$@"
+        if [ "$DESKEXT" == '.fish' ]; then
+            DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}" "$@"
+        else
+            DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}" -s "$@"
+        fi
     fi
 }
 
