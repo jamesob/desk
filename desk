@@ -9,7 +9,7 @@ DESKFILE_NAME=Deskfile
 ## Commands
 
 cmd_version() {
-    echo "◲  desk 0.5.0"
+    echo "◲  desk 0.5.1"
 }
 
 
