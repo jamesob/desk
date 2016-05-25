@@ -130,7 +130,7 @@ cmd_go() {
         exit 1
     else
         local SHELL_EXEC="$(get_running_shell)"
-        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" "${SHELL_EXEC}" "$@"
+        DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" exec "${SHELL_EXEC}" "$@"
     fi
 }
 
