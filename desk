@@ -83,9 +83,9 @@ cmd_init() {
     # sets exit status to 1. That, however, is part of desk's normal
     # operation, so we clear exit status after that.
     if [ "$SHELLTYPE" == "fish" ]; then
-      echo "test -n \"\$DESK_ENV\"; and . \"\$DESK_ENV\"; or true" >> "$USER_SHELLRC"
+        echo "test -n \"\$DESK_ENV\"; and . \"\$DESK_ENV\"; or true" >> "$USER_SHELLRC"
     else
-      echo "[ -n \"\$DESK_ENV\" ] && source \"\$DESK_ENV\" || true" >> "$USER_SHELLRC"
+        echo "[ -n \"\$DESK_ENV\" ] && source \"\$DESK_ENV\" || true" >> "$USER_SHELLRC"
     fi
 
     echo "Done. Start adding desks to ${NEW_PREFIX}/desks!"
@@ -106,20 +106,20 @@ cmd_go() {
 
     local POSSIBLE_DESKFILE_DIR="${TODESK%$DESKFILE_NAME}"
     if [ -z "$POSSIBLE_DESKFILE_DIR" ]; then
-      POSSIBLE_DESKFILE_DIR="."
+        POSSIBLE_DESKFILE_DIR="."
     fi
 
     # If nothing could be found in $DESKS/, check to see if this is a path to
     # a Deskfile.
     if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
-      if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
-        echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
-        exit 1
-      fi
+        if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
+            echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
+            exit 1
+        fi
 
-      local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
-      DESKPATH="${REALPATH}/${DESKFILE_NAME}"
-      TODESK=$(basename "$REALPATH")
+        local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
+        DESKPATH="${REALPATH}/${DESKFILE_NAME}"
+        TODESK=$(basename "$REALPATH")
     fi
 
     # Shift desk name so we can forward on all arguments to the shell.
@@ -225,9 +225,9 @@ cmd_current() {
         done
 
         if [[ "$AUTO_ALIGN" != false ]]; then
-          print_aligned "$out" "$longest"
+            print_aligned "$out" "$longest"
         else
-          printf "%s" "$out"
+            printf "%s" "$out"
         fi
     fi
 }
@@ -311,12 +311,11 @@ get_deskfile_extension() {
 
 # Echo first argument as key/value pairs aligned into two columns; second argument is the longest key
 print_aligned() {
-  local out=$1 longest=$2
-  printf "%s" "$out" | awk -v padding="$longest" -F' - ' '{
-    printf "%-*s %s\n", padding, $1, substr($0, index($0, " - ")+2, length($0))
-  }'
+    local out=$1 longest=$2
+    printf "%s" "$out" | awk -v padding="$longest" -F' - ' '{
+        printf "%-*s %s\n", padding, $1, substr($0, index($0, " - ")+2, length($0))
+    }'
 }
-
 
 PROGRAM="${0##*/}"
 
