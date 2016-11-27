@@ -30,6 +30,8 @@ Usage:
         Activate a desk. Extra arguments are passed onto shell. If called with
         no arguments, look for a Deskfile in the current directory. If not a
         recognized desk, try as a path to directory containing a Deskfile.
+    $PROGRAM path <desk-name>
+        Returns the path for a desk's environment.
     $PROGRAM run <desk-name> <cmd>
         Run a command within a desk's environment then exit. Think '\$SHELL -c'.
     $PROGRAM edit [desk-name]
@@ -101,27 +103,7 @@ cmd_go() {
     #   - empty -> `./Deskfile`
     #
     local TODESK="$1"
-    local DESKEXT=$(get_deskfile_extension)
-    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}" 2>/dev/null)"
-
-    local POSSIBLE_DESKFILE_DIR="${TODESK%$DESKFILE_NAME}"
-    if [ -z "$POSSIBLE_DESKFILE_DIR" ]; then
-      POSSIBLE_DESKFILE_DIR="."
-    fi
-
-    # If nothing could be found in $DESKS/, check to see if this is a path to
-    # a Deskfile.
-    if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
-      if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
-        echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
-        exit 1
-      fi
-
-      local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
-      DESKPATH="${REALPATH}/${DESKFILE_NAME}"
-      TODESK=$(basename "$REALPATH")
-    fi
-
+    local DESKPATH=$(get_desk_path $TODESK)
     # Shift desk name so we can forward on all arguments to the shell.
     shift;
 
@@ -131,6 +113,17 @@ cmd_go() {
     else
         local SHELL_EXEC="$(get_running_shell)"
         DESK_NAME="${TODESK}" DESK_ENV="${DESKPATH}" exec "${SHELL_EXEC}" "$@"
+    fi
+}
+
+
+cmd_path() {
+    local DESKNAME=$1
+    local DESKPATH=$(get_desk_path $DESKNAME)
+    if [ -z "$DESKPATH" ]; then
+        exit 1
+    else
+        echo ${DESKPATH}
     fi
 }
 
@@ -272,6 +265,32 @@ get_callables() {
         | sed -E "s/function (${FNAME_CHARS}+).*/\1/"
 }
 
+get_desk_path() {
+    local TODESK=$1
+    local DESKEXT=$(get_deskfile_extension)
+    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}" 2>/dev/null)"
+    
+    local POSSIBLE_DESKFILE_DIR="${TODESK%$DESKFILE_NAME}"
+    if [ -z "$POSSIBLE_DESKFILE_DIR" ]; then
+      POSSIBLE_DESKFILE_DIR="."
+    fi
+
+    # If nothing could be found in $DESKS/, check to see if this is a path to
+    # a Deskfile.
+    if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
+      if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
+        echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
+        exit 1
+      fi
+
+      local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
+      DESKPATH="${REALPATH}/${DESKFILE_NAME}"
+      TODESK=$(basename "$REALPATH")
+    fi
+
+    echo $DESKPATH
+}
+
 get_running_shell() {
     # Echo the name of the parent shell via procfs, if we have it available.
     # Otherwise, try to use ps with bash's parent pid.
@@ -326,6 +345,7 @@ case "$1" in
     version|--version) shift;  cmd_version "$@" ;;
     ls|list) shift;            cmd_list "$@" ;;
     go|.) shift;               cmd_go "$@" ;;
+    path) shift;               cmd_path "$@" ;;
     run) shift;                cmd_run "$@" ;;
     edit) shift;               cmd_edit "$@" ;;
     *)                         cmd_current "$@" ;;
