@@ -248,3 +248,4 @@ Half of all tips will be donated to [an organization providing aid to Syrian ref
 | date | amount | organization |
 | ---- | ------ | ------------ |
 | 2015-11-18 | $1.07 | http://moas.eu |
+| 2016-11-14 | $21.00 | http://moas.eu |
