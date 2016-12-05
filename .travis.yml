@@ -6,7 +6,7 @@ services:
     - docker
 
 before_install:
-    - wget http://ftp.debian.org/debian/pool/main/s/shellcheck/shellcheck_0.3.7-5_amd64.deb
+    - wget http://ftp.debian.org/debian/pool/main/s/shellcheck/shellcheck_0.4.4-4_amd64.deb
     - ar x shellcheck_0.3.7-5_amd64.deb 
     - tar xvf data.tar.xz
     - cp ./usr/bin/shellcheck .
