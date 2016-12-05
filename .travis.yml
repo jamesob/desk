@@ -15,6 +15,5 @@ env:
     - PATH=$PATH:$(pwd)
 
 script:
-    - make lint
     - SHELL_CMD='-c ./run_tests.sh' make bash zsh
     - SHELL_CMD='-c ./run_tests.fish' make fish
