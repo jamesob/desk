@@ -75,7 +75,7 @@ cmd_init() {
         exit 1
     fi
 
-    echo "\n# Hook for desk activation" >> "$USER_SHELLRC"
+    printf "\n# Hook for desk activation\n" >> "$USER_SHELLRC"
 
     # Since the hook is appended to the rc file, its exit status becomes
     # the exit status of `source $USER_SHELLRC` which typically
