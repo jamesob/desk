@@ -172,5 +172,19 @@ echo "$RAN" | grep -E "howdy\s+" >/dev/null
 ensure $? "Deskfile invocation didn't work (example-project/)"
 
 popd
+
+## `desk load`
+
+pushd example-project
+
+RAN=$($SHELL -c '$(eval desk load .); desk; exit')
+echo "$RAN" | grep "example-project - simple desk that says hello" >/dev/null
+ensure $? "Deskfile load didn't work (./)"
+echo "$RAN" | grep -E "hi\s+" >/dev/null
+ensure $? "Deskfile load didn't work (example-project/)"
+echo "$RAN" | grep -E "howdy\s+" >/dev/null
+ensure $? "Deskfile load didn't work (example-project/)"
+
+popd
                      
 echo "tests pass."
