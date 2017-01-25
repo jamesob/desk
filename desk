@@ -346,7 +346,7 @@ get_desk_name_and_path() {
     # a Deskfile.
     if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
       if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
-        echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
+        >&2 echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
         exit 1
       fi
 
