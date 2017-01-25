@@ -30,6 +30,11 @@ Usage:
         Activate a desk. Extra arguments are passed onto shell. If called with
         no arguments, look for a Deskfile in the current directory. If not a
         recognized desk, try as a path to directory containing a Deskfile.
+    $PROGRAM load [<desk-name-or-path>]
+        Display the commands needed to load a desk into the current shell.  If
+        called with no arguments, look for a Deskfile in the current directory.
+        If not a recognized desk, try as a path to directory containing a
+        Deskfile. Normal usage: eval \$($PROGRAM load <name>)
     $PROGRAM run <desk-name> '<cmd>'
     $PROGRAM run <desk-name> <cmd> <arg>...
         Run a command within a desk's environment then exit. In the first form
