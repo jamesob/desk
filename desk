@@ -146,8 +146,7 @@ cmd_load() {
         echo "Desk $TODESK (${TODESK}${DESKEXT}) not found in $DESKS"
         exit 1
     else
-      echo "export DESK_NAME=${TODESK}"
-      echo "export DESK_ENV=${DESKPATH}"
+      echo "export DESK_NAME=\"${TODESK}\"; export DESK_ENV=\"${DESKPATH}\"; source \${DESK_ENV}"
     fi
 }
 
