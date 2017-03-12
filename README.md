@@ -237,9 +237,9 @@ fi
 
 ### Tips accepted
 
-![18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h](http://i.imgur.com/Faez4cr.png)
+![18ehgMUJBqKc2Eyi6WHiMwHFwA8kobYEhy](http://i.imgur.com/KAfUPA6.png)
 
-BTC: `18qMe1NG8maceraRv1ttY7tJgHYv2c8b5h`
+BTC: `18ehgMUJBqKc2Eyi6WHiMwHFwA8kobYEhy`
 
 Half of all tips will be donated to [an organization providing aid to Syrian refugees](http://www.moas.eu/).
 
