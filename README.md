@@ -235,6 +235,11 @@ if [ -f ~/.bashrc ]; then
 fi
 ```
 
+### Related projects
+
+- [godesk](https://github.com/hamin/godesk) by @hamin: a desk launcher with fuzzy filtering
+
+
 ### Tips accepted
 
 ![18ehgMUJBqKc2Eyi6WHiMwHFwA8kobYEhy](http://i.imgur.com/KAfUPA6.png)
