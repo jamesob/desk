@@ -287,14 +287,12 @@ get_running_shell() {
     else
         # Strip leading dash for login shells.
         # If the parent process is a login shell, guess bash.
-        local CMDLINE_SHELL=$(ps -o args -p $PPID | tail -1 | sed -e 's/login/bash/' -e 's/^-//')
+        local CMDLINE_SHELL=$(ps -o comm= -p $PPID | tail -1 | sed -e 's/login/bash/' -e 's/^-//')
     fi
 
     if [ ! -z "$CMDLINE_SHELL" ]; then
-        if [ -z $SHELL ] && [[ ! $CMDLINE_SHELL = *$SHELL* ]]; then
-            basename "$CMDLINE_SHELL"
-            exit
-        fi
+        basename "$CMDLINE_SHELL"
+        exit
     fi
 
     # Fall back to $SHELL otherwise.
