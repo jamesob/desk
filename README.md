@@ -123,7 +123,7 @@ and add `sudo` as needed.
 
 #### With git
 
-0. `git clone git@github.com:jamesob/desk.git && cd desk && sudo make install`
+0. `git clone https://github.com/jamesob/desk.git && cd desk && sudo make install`
 
 After that, run `desk init` and start adding deskfiles with either `desk edit [deskfile name]`
 or by manually adding shell scripts into your deskfiles directory (by default `~/.desk/desks/`).
