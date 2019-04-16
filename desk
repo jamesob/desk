@@ -30,8 +30,11 @@ Usage:
         Activate a desk. Extra arguments are passed onto shell. If called with
         no arguments, look for a Deskfile in the current directory. If not a
         recognized desk, try as a path to directory containing a Deskfile.
-    $PROGRAM run <desk-name> <cmd>
-        Run a command within a desk's environment then exit. Think '\$SHELL -c'.
+    $PROGRAM run <desk-name> '<cmd>'
+    $PROGRAM run <desk-name> <cmd> <arg>...
+        Run a command within a desk's environment then exit. In the first form
+        shell expansion is performed. In the second form, the argument vector
+        is executed as is.
     $PROGRAM edit [desk-name]
         Edit (or create) a deskfile with the name specified, otherwise
         edit the active deskfile.
@@ -138,7 +141,11 @@ cmd_go() {
 cmd_run() {
     local TODESK="$1"
     shift;
-    cmd_go "$TODESK" -ic "$@"
+    if [ $# -eq 1 ]; then
+        cmd_go "$TODESK" -ic "$1"
+    else
+        cmd_go "$TODESK" -ic '"$@"' -- "$@"
+    fi
 }
 
 
