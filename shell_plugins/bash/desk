@@ -24,7 +24,7 @@ _desk() {
             esac
             ;;
         *)
-            COMPREPLY=()
+            _command_offset 3
             ;;
     esac
 }
