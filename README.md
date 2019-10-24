@@ -160,6 +160,13 @@ or
 0. `git clone git@github.com:jamesob/desk.git /tmp/desk && cp -r /tmp/desk/shell_plugins/zsh desk`
 0. Add desk to your plugin list
 
+Then, add the following to your .zshrc:
+
+```
+# Hook for desk activation
+[ -n "$DESK_ENV" ] && source "$DESK_ENV" || true
+```
+
 #### Using [Antigen](https://github.com/zsh-users/antigen)
 
 0. Add `antigen bundle jamesob/desk shell_plugins/zsh` to your `.zshrc`
