@@ -195,7 +195,7 @@ cmd_list() {
 # --no-format: Use ' - ' to separate alias/export/function names from their descriptions
 cmd_current() {
     if [ -z "$DESK_ENV" ]; then
-        printf "No desk activated.\n\n%s" "$(cmd_list)"
+        printf "No desk activated.\n\n%s\n" "$(cmd_list)"
         exit 1
     fi
 
