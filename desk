@@ -30,6 +30,11 @@ Usage:
         Activate a desk. Extra arguments are passed onto shell. If called with
         no arguments, look for a Deskfile in the current directory. If not a
         recognized desk, try as a path to directory containing a Deskfile.
+    $PROGRAM load [<desk-name-or-path>]
+        Display the commands needed to load a desk into the current shell.  If
+        called with no arguments, look for a Deskfile in the current directory.
+        If not a recognized desk, try as a path to directory containing a
+        Deskfile. Normal usage: eval \$($PROGRAM load <name>)
     $PROGRAM run <desk-name> '<cmd>'
     $PROGRAM run <desk-name> <cmd> <arg>...
         Run a command within a desk's environment then exit. In the first form
@@ -103,27 +108,10 @@ cmd_go() {
     #   - a directory containing a Deskfile
     #   - empty -> `./Deskfile`
     #
-    local TODESK="$1"
-    local DESKEXT=$(get_deskfile_extension)
-    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}" 2>/dev/null)"
 
-    local POSSIBLE_DESKFILE_DIR="${TODESK%$DESKFILE_NAME}"
-    if [ -z "$POSSIBLE_DESKFILE_DIR" ]; then
-      POSSIBLE_DESKFILE_DIR="."
-    fi
-
-    # If nothing could be found in $DESKS/, check to see if this is a path to
-    # a Deskfile.
-    if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
-      if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
-        echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
-        exit 1
-      fi
-
-      local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
-      DESKPATH="${REALPATH}/${DESKFILE_NAME}"
-      TODESK=$(basename "$REALPATH")
-    fi
+    local RESULT="$(get_desk_name_and_path $1)"
+    local TODESK="${RESULT%:*}"
+    local DESKPATH="${RESULT#*:}"
 
     # Shift desk name so we can forward on all arguments to the shell.
     shift;
@@ -137,6 +125,30 @@ cmd_go() {
     fi
 }
 
+
+cmd_load() {
+    # TODESK ($1) may either be
+    #
+    #   - the name of a desk in $DESKS/
+    #   - a path to a Deskfile
+    #   - a directory containing a Deskfile
+    #   - empty -> `./Deskfile`
+    #
+
+    local RESULT="$(get_desk_name_and_path $1)"
+    local TODESK="${RESULT%:*}"
+    local DESKPATH="${RESULT#*:}"
+
+    # Shift desk name so we can forward on all arguments to the shell.
+    shift;
+
+    if [ -z "$DESKPATH" ]; then
+        echo "Desk $TODESK (${TODESK}${DESKEXT}) not found in $DESKS"
+        exit 1
+    else
+      echo "export DESK_NAME=\"${TODESK}\"; export DESK_ENV=\"${DESKPATH}\"; source \${DESK_ENV}"
+    fi
+}
 
 cmd_run() {
     local TODESK="$1"
@@ -324,6 +336,32 @@ print_aligned() {
   }'
 }
 
+get_desk_name_and_path() {
+    local TODESK="$1"
+    local DESKEXT=$(get_deskfile_extension)
+    local DESKPATH="$(find "${DESKS}/" -name "${TODESK}${DESKEXT}" 2>/dev/null)"
+
+    local POSSIBLE_DESKFILE_DIR="${TODESK%$DESKFILE_NAME}"
+    if [ -z "$POSSIBLE_DESKFILE_DIR" ]; then
+      POSSIBLE_DESKFILE_DIR="."
+    fi
+
+    # If nothing could be found in $DESKS/, check to see if this is a path to
+    # a Deskfile.
+    if [[ -z "$DESKPATH" && -d "$POSSIBLE_DESKFILE_DIR" ]]; then
+      if [ ! -f "${POSSIBLE_DESKFILE_DIR}/${DESKFILE_NAME}" ]; then
+        >&2 echo "No Deskfile found in '${POSSIBLE_DESKFILE_DIR}'"
+        exit 1
+      fi
+
+      local REALPATH=$( cd $POSSIBLE_DESKFILE_DIR && pwd )
+      DESKPATH="${REALPATH}/${DESKFILE_NAME}"
+      TODESK=$(basename "$REALPATH")
+    fi
+
+    echo "${TODESK}:${DESKPATH}"
+}
+
 
 PROGRAM="${0##*/}"
 
@@ -333,6 +371,7 @@ case "$1" in
     version|--version) shift;  cmd_version "$@" ;;
     ls|list) shift;            cmd_list "$@" ;;
     go|.) shift;               cmd_go "$@" ;;
+    load) shift;               cmd_load "$@" ;;
     run) shift;                cmd_run "$@" ;;
     edit) shift;               cmd_edit "$@" ;;
     *)                         cmd_current "$@" ;;
